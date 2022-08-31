@@ -2,11 +2,16 @@ import cv2
 import numpy as np
 import random
 
+fungus_types = [
+    "crimson",
+    "warped"
+]
+
 texture_templates = [
-    "templates/crimson_fungus_stelum.png",
-    "templates/crimson_fungus_head.png",
-    "templates/crimson_fungus_details.png",
-    "templates/crimson_fungus_details2.png"
+    "_fungus_stelum",
+    "_fungus_head",
+    "_fungus_details",
+    "_fungus_details2"
 ]
 
 #               stelum,    head,     details,  details2
@@ -17,7 +22,8 @@ out_images = []
 for texture in texture_templates:
 
     color_index = texture_templates.index(texture)
-    in_img = cv2.imread(texture, cv2.IMREAD_UNCHANGED)
+    path = "templates/"+fungus_types[0]+texture+".png"
+    in_img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
     b, g, r, a = cv2.split(in_img)
 
     # extracting channels from fungus_colors
