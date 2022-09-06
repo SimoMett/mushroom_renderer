@@ -2,11 +2,18 @@ import cv2
 import numpy as np
 import random
 
-texture_templates = [
+crimson_txd_templates = [
     "templates/crimson_fungus_stelum.png",
     "templates/crimson_fungus_head.png",
     "templates/crimson_fungus_details.png",
     "templates/crimson_fungus_details2.png"
+]
+
+warped_txd_templates = [
+    "templates/warped_fungus_stelum.png",
+    "templates/warped_fungus_head.png",
+    "templates/warped_fungus_details.png",
+    "templates/warped_fungus_details2.png"
 ]
 
 #               stelum,    head,     details,  details2
@@ -14,9 +21,9 @@ fungus_colors = [random.randint(0, 0xFFFFFF), random.randint(0, 0xFFFFFF), rando
 
 out_images = []
 
-for texture in texture_templates:
+for texture in warped_txd_templates:
 
-    color_index = texture_templates.index(texture)
+    color_index = warped_txd_templates.index(texture)
     in_img = cv2.imread(texture, cv2.IMREAD_UNCHANGED)
     b, g, r, a = cv2.split(in_img)
 
