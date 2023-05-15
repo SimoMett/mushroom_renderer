@@ -1,26 +1,30 @@
-import tkinter
 from tkinter import *
 from tkinter import ttk
 from tkinter import Canvas
+from PIL import Image, ImageTk
+from PIL.Image import Resampling
 
 root = Tk()
-color_selection_frame = ttk.Frame(root, padding=10, width=200)
-image_preview_frame = ttk.Frame(root, padding=10, width=20)
+color_selection_frame = ttk.Frame(root, padding=5, width=200)
+image_preview_frame = ttk.Frame(root, padding=5, width=20)
 color_selection_frame.pack(anchor="nw", side="left")
 image_preview_frame.pack(side="right")
 
-canvas_width = 800
-canvas_height = 400
-w = Canvas(image_preview_frame,
-           width=canvas_width,
-           height=canvas_height)
+# Create a canvas
+w = Canvas(root, width=600, height=400)
 w.pack()
 
+# Load an image in the script
+img = (Image.open("test.png"))
 
-y = int(canvas_height / 2)
-w.create_line(0, y, canvas_width, y, fill="#476042")
-w.scan_mark(20, 20)
+# Resize the Image using resize method
+resized_image = img.resize((300, 205), Resampling.NEAREST)
+new_image = ImageTk.PhotoImage(resized_image)
 
+# Add image to the Canvas Items
+w.create_image(10, 10, anchor=NW, image=new_image)
+
+ttk.Entry().pack()
 ttk.Scale(color_selection_frame).pack()
 ttk.Scale(color_selection_frame).pack()
 ttk.Scale(color_selection_frame).pack()
