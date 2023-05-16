@@ -1,44 +1,48 @@
 from tkinter import *
-from tkinter import ttk
-from tkinter import Canvas
-from PIL import Image, ImageTk
+from PIL import ImageTk, Image
 from PIL.Image import Resampling
 
+
+def load_png(png_file: str):
+    png = (Image.open(png_file))
+    square_size = 600
+    resized_image = png.resize((square_size, square_size), Resampling.NEAREST)
+    return ImageTk.PhotoImage(resized_image)
+
+def print_value(val):
+    print(val)
+
+###  initialise window
+min_height = 620
+min_width = 1040
 root = Tk()
-color_selection_frame = ttk.Frame(root, padding=5, width=200)
-image_preview_frame = ttk.Frame(root, padding=5, width=20)
-color_selection_frame.pack(anchor="nw", side="left")
-image_preview_frame.pack(side="right")
+root.title("MycologyMC Fungi builder")
+root.geometry(str(min_width)+"x"+str(min_height))
+root.minsize(min_width, min_height)
+#root.maxsize(min_width, min_height)
 
-# Create a canvas
-w = Canvas(root, width=600, height=400)
-w.pack()
+### build color scales
+template_names = ["stelum", "head", "details", "details2"]
+labels = ["Red", "Green", "Blue"]
+scales_frame = LabelFrame(root)
+for name in template_names:
+    frame = LabelFrame(scales_frame, text=name)
+    for i in range(3):
+        Label(frame, text=labels[i % 3]).grid(row=i, column=0)
+        w2 = Scale(frame, from_=0, to=255, orient=HORIZONTAL, length=360, command=print_value)
+        w2.set(127)
+        w2.grid(row=i, column=1)
+    frame.grid(row=template_names.index(name), column=0)
 
-# Load an image in the script
-img = (Image.open("test.png"))
+scales_frame.grid(row=0, column=0)
 
-# Resize the Image using resize method
-resized_image = img.resize((300, 205), Resampling.NEAREST)
-new_image = ImageTk.PhotoImage(resized_image)
 
-# Add image to the Canvas Items
-w.create_image(10, 10, anchor=NW, image=new_image)
+### build resulting image frame
+image_frame = LabelFrame(root)
 
-ttk.Entry().pack()
-ttk.Scale(color_selection_frame).pack()
-ttk.Scale(color_selection_frame).pack()
-ttk.Scale(color_selection_frame).pack()
+img = load_png("test.png")
+Label(image_frame, image = img).pack()
 
-ttk.Scale(color_selection_frame).pack()
-ttk.Scale(color_selection_frame).pack()
-ttk.Scale(color_selection_frame).pack()
-
-ttk.Scale(color_selection_frame).pack()
-ttk.Scale(color_selection_frame).pack()
-ttk.Scale(color_selection_frame).pack()
-
-ttk.Scale(color_selection_frame).pack()
-ttk.Scale(color_selection_frame).pack()
-ttk.Scale(color_selection_frame).pack()
+image_frame.grid(row=0, column=1)
 
 root.mainloop()
