@@ -12,27 +12,15 @@ def load_png(png_file: str):
     return ImageTk.PhotoImage(resized_image)
 
 
-def stelum_value(val):
-    print("stelum" + val)
+def scale_notify(val):
+    notify()
     return
 
 
-def head_value(val):
-    # print(val)
-    return
+def notify():
+    for j in range(4):
+        color_labels[j].configure(text=str(color_pickers[j].current_color))
 
-
-def details_value(val):
-    # print(val)
-    return
-
-
-def details2_value(val):
-    # print(val)
-    return
-
-
-command_functions = [stelum_value, head_value, details_value, details2_value]
 
 ###  initialise window
 min_height = 670
@@ -51,27 +39,31 @@ for name in template_names:
     frame = LabelFrame(scales_frame, text=name)
     for i in range(3):
         Label(frame, text=labels[i % 3]).grid(row=i, column=0)
-        w2 = Scale(frame, from_=0, to=255, orient=HORIZONTAL, length=360,
-                   command=command_functions[template_names.index(name)])
+        w2 = Scale(frame, name="my_scale", from_=0, to=255, orient=HORIZONTAL, length=360, command=scale_notify)
         w2.set(127)
         w2.grid(row=i, column=1)
     frame.grid(row=template_names.index(name), column=0)
 
 scales_frame.grid(row=0, column=0)
 
+### build color pickers
+color_pickers = []
+color_labels = []
 color_output_frame = LabelFrame(root)
+
 i = 0
 for name in template_names:
     frame = Frame(color_output_frame)
 
     Label(frame, text=name).grid(row=0, column=0)
 
-    entry1 = Label(frame)
-    entry1.grid(row=0, column=1)
-    entry1.configure(text="FFFFFF")
+    label = Label(frame, text="0")
+    label.grid(row=0, column=1)
+    color_labels.append(label)
 
-    color_picker_button = ColorPickerButton(frame)
+    color_picker_button = ColorPickerButton(frame, notify)
     color_picker_button.button.grid(row=0, column=2)
+    color_pickers.append(color_picker_button)
 
     frame.grid(row=i >> 1, column=i % 2)
     i += 1
