@@ -35,7 +35,7 @@ def details2_value(val):
 command_functions = [stelum_value, head_value, details_value, details2_value]
 
 ###  initialise window
-min_height = 730
+min_height = 670
 min_width = 1030
 root = Tk()
 root.title("MycologyMC Fungi builder")
@@ -60,6 +60,7 @@ for name in template_names:
 scales_frame.grid(row=0, column=0)
 
 color_output_frame = LabelFrame(root)
+i = 0
 for name in template_names:
     frame = Frame(color_output_frame)
 
@@ -72,7 +73,8 @@ for name in template_names:
     color_picker_button = ColorPickerButton(frame)
     color_picker_button.button.grid(row=0, column=2)
 
-    frame.grid(row=round(template_names.index(name) / 2), column=template_names.index(name) % 2)
+    frame.grid(row=i >> 1, column=i % 2)
+    i += 1
 color_output_frame.grid(row=1, column=0)
 
 ### build resulting image frame
