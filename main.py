@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-import random
 
 fungus_types = [
     "crimson",
@@ -19,7 +18,6 @@ stelum_color = 0xffffff
 head_color = 0xffffff
 details_color = 0xffffff
 details2_color = 0xffffff
-#fungus_colors = [random.randint(0, stelum_color), random.randint(0, head_color), random.randint(0, details_color), random.randint(0, details2_color)]
 fungus_colors = [stelum_color, head_color, details_color, details2_color]
 
 out_images = []
