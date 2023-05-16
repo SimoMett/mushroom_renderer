@@ -9,13 +9,23 @@ def load_png(png_file: str):
     resized_image = png.resize((square_size, square_size), Resampling.NEAREST)
     return ImageTk.PhotoImage(resized_image)
 
-def print_value(val):
+def stelum_value(val):
+    print("stelum"+val)
+    return
+
+def head_value(val):
     #print(val)
     return
 
-def entry_command(val1, val2):
-    print(val2)
+def details_value(val):
+    #print(val)
     return
+
+def details2_value(val):
+    #print(val)
+    return
+
+command_functions = [stelum_value, head_value, details_value, details2_value]
 
 ###  initialise window
 min_height = 710
@@ -34,7 +44,7 @@ for name in template_names:
     frame = LabelFrame(scales_frame, text=name)
     for i in range(3):
         Label(frame, text=labels[i % 3]).grid(row=i, column=0)
-        w2 = Scale(frame, from_=0, to=255, orient=HORIZONTAL, length=360, command=print_value)
+        w2 = Scale(frame, from_=0, to=255, orient=HORIZONTAL, length=360, command=command_functions[template_names.index(name)])
         w2.set(127)
         w2.grid(row=i, column=1)
     frame.grid(row=template_names.index(name), column=0)
@@ -47,7 +57,7 @@ for name in template_names:
     Label(frame, text=name).grid(row=0, column=0)
     entry1 = Entry(frame)
     entry1.grid(row=0,column=1)
-    entry1.insert(0, "FFFFFF")
+    #entry1.insert(0, "FFFFFF")
     frame.pack()
 color_output_frame.grid(row=1, column=0)
 
