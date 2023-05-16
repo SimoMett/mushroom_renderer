@@ -2,20 +2,27 @@ import tkinter as tk
 import tkinter.ttk as ttk
 
 import PIL.Image
-import numpy
 from PIL import ImageTk, Image
 from tkcolorpicker import askcolor
 
+
+def open_color_chooser():
+    color = askcolor((255, 255, 0), root)
+    new_img = ImageTk.PhotoImage(Image.new('RGB', (16, 16), color=color[0]))
+    test_button.configure(image=new_img)
+    test_button.photo = new_img
+
+
 root = tk.Tk()
+root.geometry("100x100")
+root.minsize(100, 100)
 
 image_frame = ttk.Frame(root)
 
-#img = Image.fromarray(numpy.array([[0 for i in range(16)] for j in range(16)]))
-img = ImageTk.PhotoImage(PIL.Image.open("../test.png"))
+img = ImageTk.PhotoImage(Image.new('RGB', (16, 16), color='red'))
+test_button = ttk.Button(image_frame, text="test", image=img, command=open_color_chooser)
+test_button.pack()
 
-ttk.Label(image_frame, image = img).pack()
+image_frame.pack()
 
-image_frame.grid(row=0, column=1)
-
-print(askcolor((255, 255, 0), root))
 root.mainloop()
