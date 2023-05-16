@@ -13,9 +13,6 @@ class ColorPickerButton:
         self.button = ttk.Button(self.master, image=self.img, command=self.open_color_chooser)
         return
 
-    def pack(self):
-        self.button.pack()
-
     def open_color_chooser(self):
         color = askcolor((255, 255, 0), self.master)
         if color is not None:
