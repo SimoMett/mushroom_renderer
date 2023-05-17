@@ -63,6 +63,7 @@ if __name__ == "__main__":
     min_height = 670
     min_width = 1030
     root = Tk()
+    root.iconphoto(True, ImageTk.PhotoImage(Image.open("res/icon.png").resize((32, 32), Resampling.NEAREST)))
     root.title("MycologyMC Fungi builder")
     root.geometry(str(min_width) + "x" + str(min_height))
     root.minsize(min_width, min_height)
