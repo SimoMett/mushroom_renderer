@@ -3,10 +3,11 @@ from PIL import ImageTk, Image
 from PIL.Image import Resampling
 
 from src.colorpickerbutton import ColorPickerButton
+from src.draw_fungus import draw_fungus
 
 
-def load_png(png_file: str):
-    png = (Image.open(png_file))
+def load_fungus(colors):
+    png = (Image.fromarray(draw_fungus(colors)))
     square_size = 600
     resized_image = png.resize((square_size, square_size), Resampling.NEAREST)
     return ImageTk.PhotoImage(resized_image)
@@ -18,8 +19,14 @@ def scale_notify(val):
 
 
 def notify():
+    fungus_colors = []
     for j in range(4):
+        fungus_colors.append(color_pickers[j].current_color)
         color_labels[j].configure(text=str(color_pickers[j].current_color))
+    new_img = load_fungus(fungus_colors)
+    fungus_label.configure(image=new_img)
+    fungus_label.photo = new_img
+    return
 
 
 ###  initialise window
@@ -73,8 +80,9 @@ color_output_frame.grid(row=1, column=0)
 ### build resulting image frame
 image_frame = LabelFrame(root)
 
-img = load_png("test.png")
-Label(image_frame, image=img).pack()
+img = load_fungus([0, 1, 2, 3])
+fungus_label = Label(image_frame, image=img)
+fungus_label.pack()
 
 image_frame.grid(row=0, column=1)
 
