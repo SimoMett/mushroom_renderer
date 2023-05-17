@@ -39,7 +39,8 @@ for name in template_names:
     frame = LabelFrame(scales_frame, text=name)
     for i in range(3):
         Label(frame, text=labels[i % 3]).grid(row=i, column=0)
-        w2 = Scale(frame, name="my_scale", from_=0, to=255, orient=HORIZONTAL, length=360, command=scale_notify)
+        w2 = Scale(frame, name=str(name).lower() + "_scale" + str(i), from_=0, to=255, orient=HORIZONTAL, length=360,
+                   command=scale_notify)
         w2.set(127)
         w2.grid(row=i, column=1)
     frame.grid(row=template_names.index(name), column=0)
