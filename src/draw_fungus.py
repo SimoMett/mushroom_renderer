@@ -21,7 +21,7 @@ def draw_fungus(fungus_colors, fungus_type=0):
     out_images = []
     for texture in texture_templates:
         color_index = texture_templates.index(texture)
-        path = "templates/" + fungus_types[fungus_type] + texture + ".png"
+        path = "res/templates/" + fungus_types[fungus_type] + texture + ".png"
         in_img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
         b, g, r, a = cv2.split(in_img)
 
