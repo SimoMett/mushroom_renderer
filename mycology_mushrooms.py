@@ -49,6 +49,14 @@ def switch_to_warped():
     update_gui()
     return
 
+def copy_colors_to_clipboard():
+    print("test")
+    return
+
+def hide_all_menus(arg):
+    switch_template_menu.unpost()
+    copy_colors_menu.unpost()
+
 
 if __name__ == "__main__":
     ###  initialise window
@@ -102,6 +110,7 @@ if __name__ == "__main__":
     color_output_frame.grid(row=1, column=0)
 
     ### build resulting image frame
+    #TODO wrap this fungus label in a class. It should be responsible to store the colors and draw the image
     image_frame = LabelFrame(root)
 
     img = load_fungus([random.randint(0,0xffffff) for i in range(4)], current_fungus_type)
@@ -114,9 +123,13 @@ if __name__ == "__main__":
     switch_template_menu = Menu(root, tearoff=0)
     switch_template_menu.add_command(label="Switch to Crimson fungus template", command=switch_to_crimson)
     switch_template_menu.add_command(label="Switch to Warped fungus template", command=switch_to_warped)
-
     fungus_label.bind("<Button-3>", lambda event: switch_template_menu.post(event.x_root, event.y_root))
-    root.bind("<Button-1>", lambda event: switch_template_menu.unpost())
 
+    ### right click to copy colors to clipboard
+    copy_colors_menu = Menu(root, tearoff=0)
+    copy_colors_menu.add_command(label="Copy to clipboard", command=copy_colors_to_clipboard)
+    color_output_frame.bind("<Button-3>", lambda evt: copy_colors_menu.post(evt.x_root, evt.y_root))
+
+    root.bind("<Button-1>", hide_all_menus)
 
     root.mainloop()
