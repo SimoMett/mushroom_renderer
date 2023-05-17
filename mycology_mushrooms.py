@@ -1,8 +1,8 @@
 import random
 from tkinter import *
+import pyperclip
 from PIL import ImageTk, Image
 from PIL.Image import Resampling
-
 from src.colorpickerbutton import ColorPickerButton
 from src.draw_fungus import draw_fungus, CRIMSON_FUNGUS_TYPE, WARPED_FUNGUS_TYPE
 
@@ -50,8 +50,7 @@ def switch_to_warped():
     return
 
 def copy_colors_to_clipboard():
-    print("test")
-    return
+    pyperclip.copy(str([color_pickers[j].current_color for j in range(4)]))
 
 def hide_all_menus(arg):
     switch_template_menu.unpost()
