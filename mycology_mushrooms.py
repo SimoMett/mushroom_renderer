@@ -3,11 +3,11 @@ from PIL import ImageTk, Image
 from PIL.Image import Resampling
 
 from src.colorpickerbutton import ColorPickerButton
-from src.draw_fungus import draw_fungus
+from src.draw_fungus import draw_fungus, CRIMSON_FUNGUS_TYPE, WARPED_FUNGUS_TYPE
 
 
-def load_fungus(colors):
-    png = (Image.fromarray(draw_fungus(colors)))
+def load_fungus(colors, fungus_type=WARPED_FUNGUS_TYPE):
+    png = (Image.fromarray(draw_fungus(colors, fungus_type)))
     square_size = 600
     resized_image = png.resize((square_size, square_size), Resampling.NEAREST)
     return ImageTk.PhotoImage(resized_image)
@@ -80,7 +80,7 @@ color_output_frame.grid(row=1, column=0)
 ### build resulting image frame
 image_frame = LabelFrame(root)
 
-img = load_fungus([0, 1, 2, 3])
+img = load_fungus([-1, -1, -1, -1])
 fungus_label = Label(image_frame, image=img)
 fungus_label.pack()
 

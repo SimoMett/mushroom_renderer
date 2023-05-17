@@ -1,6 +1,9 @@
 import cv2
 import numpy as np
 
+CRIMSON_FUNGUS_TYPE = 0
+WARPED_FUNGUS_TYPE = 1
+
 fungus_types = [
     "crimson",
     "warped"
@@ -14,11 +17,11 @@ texture_templates = [
 ]
 
 
-def draw_fungus(fungus_colors):
+def draw_fungus(fungus_colors, fungus_type=0):
     out_images = []
     for texture in texture_templates:
         color_index = texture_templates.index(texture)
-        path = "templates/" + fungus_types[0] + texture + ".png"
+        path = "templates/" + fungus_types[fungus_type] + texture + ".png"
         in_img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
         b, g, r, a = cv2.split(in_img)
 

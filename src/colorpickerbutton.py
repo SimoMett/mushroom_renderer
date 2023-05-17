@@ -7,7 +7,7 @@ class ColorPickerButton:
 
     def __init__(self, master, command=None):
         self.master = master
-        self.current_color = 0
+        self.current_color = -1
         self.command = command
         self.img = ImageTk.PhotoImage(Image.new('RGB', (24, 24), self.current_color))
         self.button = ttk.Button(self.master, image=self.img, command=self.open_color_chooser)
