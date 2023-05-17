@@ -18,7 +18,7 @@ stelum_color = 0xffffff
 head_color = 0xffffff
 details_color = 0xffffff
 details2_color = 0xffffff
-fungus_colors = [stelum_color, head_color, details_color, details2_color]
+fungus_colors = [96564928, -1231718516, 751835909, -1044800857]
 
 out_images = []
 
@@ -50,4 +50,4 @@ for texture in texture_templates:
 result = np.full((16, 16, 4), 0, dtype="uint8")
 for x in out_images:
     result += x
-cv2.imwrite("test.png", result)
+cv2.imwrite("icon.png", result)
