@@ -23,7 +23,8 @@ def update_gui():
     fungus_colors = []
     for j in range(4):
         fungus_colors.append(color_pickers[j].current_color)
-        color_labels[j].configure(text=str(color_pickers[j].current_color))
+        text = str(hex(color_pickers[j].current_color)).removeprefix("0x")
+        color_labels[j].configure(text=text)
     new_img = load_fungus(fungus_colors, current_fungus_type)
     fungus_label.configure(image=new_img)
     fungus_label.photo = new_img
