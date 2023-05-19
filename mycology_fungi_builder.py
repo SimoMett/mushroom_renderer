@@ -13,21 +13,7 @@ def scale_notify(val):
     return
 
 
-def switch_to_crimson():
-    global current_fungus_type
-    current_fungus_type = CRIMSON_FUNGUS_TYPE
-    #update_gui()
-    return
-
-
-def switch_to_warped():
-    global current_fungus_type
-    current_fungus_type = WARPED_FUNGUS_TYPE
-    #update_gui()
-    return
-
-
-def copy_colors_to_clipboard(as_hex=True):
+def copy_colors_to_clipboard(as_hex=True):  # FIXME
     if as_hex:
         clipboard_string = str([hex(color_pickers[j].current_color) for j in range(4)]) \
             .removeprefix("[") \
@@ -39,7 +25,6 @@ def copy_colors_to_clipboard(as_hex=True):
 
 
 def hide_all_menus(arg):
-    switch_template_menu.unpost()
     copy_colors_menu.unpost()
 
 
@@ -92,12 +77,6 @@ if __name__ == "__main__":
     for color_picker in color_pickers:
         color_picker.attach_fungus_image_frame(image_frame)
 
-    ### right click to switch fungus
-    switch_template_menu = Menu(root, tearoff=0)
-    switch_template_menu.add_command(label="Switch to Crimson fungus template", command=switch_to_crimson)
-    switch_template_menu.add_command(label="Switch to Warped fungus template", command=switch_to_warped)
-    #fungus_label.bind("<Button-3>", lambda event: switch_template_menu.post(event.x_root, event.y_root))
-
     ### right click to copy colors to clipboard
     copy_colors_menu = Menu(root, tearoff=0)
     copy_colors_menu.add_command(label="Copy to clipboard as HEX", command=lambda: copy_colors_to_clipboard(True))
@@ -108,6 +87,6 @@ if __name__ == "__main__":
     for label in color_labels:
         label.bind("<Button-3>", lambda evt: copy_colors_menu.post(evt.x_root, evt.y_root))
 
-    root.bind("<Button-1>", hide_all_menus)
+    root.bind("<Button-1>", lambda arg: image_frame.switch_template_menu.unpost())
 
     root.mainloop()
