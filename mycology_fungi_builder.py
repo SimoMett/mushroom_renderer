@@ -27,11 +27,14 @@ def copy_colors_to_clipboard(as_hex=True):
 def hide_all_menus(arg):
     copy_colors_menu.unpost()
 
+def pick_random_colors():
+    print("test")
+
 
 if __name__ == "__main__":
     ###  initialise window
-    min_height = 670
-    min_width = 1030
+    min_height = 660
+    min_width = 1000
     root = Tk()
     root.iconphoto(True, ImageTk.PhotoImage(Image.open("res/icon.png").resize((32, 32), Image.NEAREST)))
     root.title("MycologyMC Fungi builder")
@@ -75,6 +78,9 @@ if __name__ == "__main__":
     image_frame.grid(row=0, column=1)
     for color_picker in color_pickers:
         color_picker.attach_fungus_image_frame(image_frame)
+
+    ### build random colors button
+    Button(root, text="Random colors", command=pick_random_colors).grid(row=1, column=1)
 
     ### right click to copy colors to clipboard
     copy_colors_menu = Menu(root, tearoff=0)
