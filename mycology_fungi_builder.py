@@ -97,21 +97,7 @@ if __name__ == "__main__":
 
     i = 0
     for name in template_names:
-        frame = Frame(color_output_frame)
-
-        label = Label(frame, text=name)
-        label.grid(row=0, column=0)
-        label.bind("<Button-3>", lambda evt: copy_colors_menu.post(evt.x_root, evt.y_root))
-
-        label = Label(frame, text="0")
-        label.grid(row=0, column=1)
-        color_labels.append(label)
-
-        color_picker_button = ColorPickerButton(frame, update_gui)
-        color_picker_button.button.grid(row=0, column=2)
-        color_pickers.append(color_picker_button)
-
-        frame.grid(row=i >> 1, column=i % 2)
+        LabeledColorPickerButton(color_output_frame, name, i >> 1, i % 2)
         i += 1
     color_output_frame.grid(row=1, column=0)
 

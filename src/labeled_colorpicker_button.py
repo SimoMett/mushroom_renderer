@@ -6,7 +6,7 @@ from src.colorpickerbutton import ColorPickerButton
 class LabeledColorPickerButton:
 
     def __init__(self, master_frame, name, grid_placement_row, grid_placement_column):
-        self.current_color = 0x0
+        self.current_color = 0xffffff
         self.frame = Frame(master_frame)
 
         # template name label
