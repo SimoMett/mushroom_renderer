@@ -2,7 +2,7 @@ from tkinter import LabelFrame, Label
 
 from PIL import Image, ImageTk
 
-from src.draw_fungus import CRIMSON_FUNGUS_TYPE, WARPED_FUNGUS_TYPE, draw_fungus
+from src.draw_fungus import CRIMSON_FUNGUS_TYPE, draw_fungus
 
 
 class FungusImageFrame:

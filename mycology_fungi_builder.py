@@ -9,39 +9,21 @@ current_fungus_type = CRIMSON_FUNGUS_TYPE
 
 
 def scale_notify(val):
-    update_gui()
-    return
-
-
-def update_gui():
-    fungus_colors = []
-    for j in range(4):
-        fungus_colors.append(color_pickers[j].current_color)
-        text = str(hex(color_pickers[j].current_color)).removeprefix("0x")
-        color_labels[j].configure(text=text)
-    new_img = load_fungus(fungus_colors, current_fungus_type)
-    #fungus_label.configure(image=new_img)
-    #fungus_label.photo = new_img
-
-    is_r_g_or_b = 0
-    for scale in color_scales:
-        # scale.set(0)
-        is_r_g_or_b = (is_r_g_or_b + 1) % 3
-
+    #update_gui()
     return
 
 
 def switch_to_crimson():
     global current_fungus_type
     current_fungus_type = CRIMSON_FUNGUS_TYPE
-    update_gui()
+    #update_gui()
     return
 
 
 def switch_to_warped():
     global current_fungus_type
     current_fungus_type = WARPED_FUNGUS_TYPE
-    update_gui()
+    #update_gui()
     return
 
 
@@ -73,6 +55,8 @@ if __name__ == "__main__":
     # root.maxsize(min_width, min_height)
 
     ### build color scales
+    # FIXME broken + HSV is better suited
+    # TODO update mechanism on color changes
     template_names = ["Stelum", "Head", "Details", "Details2"]
     labels = ["Red", "Green", "Blue"]
     color_scales = []
