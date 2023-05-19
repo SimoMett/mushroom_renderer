@@ -1,17 +1,11 @@
 from tkinter import *
 import pyperclip
 from PIL import ImageTk, Image
-from src.colorpickerbutton import ColorPickerButton
-from src.draw_fungus import draw_fungus, CRIMSON_FUNGUS_TYPE, WARPED_FUNGUS_TYPE
+from src.draw_fungus import CRIMSON_FUNGUS_TYPE, WARPED_FUNGUS_TYPE
+from src.fungus_image_frame import FungusImageFrame
+from src.labeled_colorpicker_button import LabeledColorPickerButton
 
 current_fungus_type = CRIMSON_FUNGUS_TYPE
-
-
-def load_fungus(colors, fungus_type):
-    png = (Image.fromarray(draw_fungus(colors, fungus_type)))
-    square_size = 550
-    resized_image = png.resize((square_size, square_size), Image.NEAREST)
-    return ImageTk.PhotoImage(resized_image)
 
 
 def scale_notify(val):
@@ -26,8 +20,8 @@ def update_gui():
         text = str(hex(color_pickers[j].current_color)).removeprefix("0x")
         color_labels[j].configure(text=text)
     new_img = load_fungus(fungus_colors, current_fungus_type)
-    fungus_label.configure(image=new_img)
-    fungus_label.photo = new_img
+    #fungus_label.configure(image=new_img)
+    #fungus_label.photo = new_img
 
     is_r_g_or_b = 0
     for scale in color_scales:
@@ -88,8 +82,7 @@ if __name__ == "__main__":
         for i in range(3):
             Label(frame, text=labels[i % 3]).grid(row=i, column=0)
             w2 = Scale(frame, name=str(name).lower() + "_scale" + str(i), from_=0, to=255, orient=HORIZONTAL,
-                       length=360,
-                       command=scale_notify)
+                       length=360)
             w2.set(127)
             w2.grid(row=i, column=1)
             color_scales.append(w2)
@@ -123,20 +116,14 @@ if __name__ == "__main__":
     color_output_frame.grid(row=1, column=0)
 
     ### build resulting image frame
-    # TODO wrap this fungus label in a class. It should be responsible to store the colors and draw the image
-    image_frame = LabelFrame(root)
-
-    img = load_fungus([0xffffff for i in range(4)], current_fungus_type)
-    fungus_label = Label(image_frame, image=img)
-    fungus_label.pack()
-
+    image_frame = FungusImageFrame(root)
     image_frame.grid(row=0, column=1)
 
     ### right click to switch fungus
     switch_template_menu = Menu(root, tearoff=0)
     switch_template_menu.add_command(label="Switch to Crimson fungus template", command=switch_to_crimson)
     switch_template_menu.add_command(label="Switch to Warped fungus template", command=switch_to_warped)
-    fungus_label.bind("<Button-3>", lambda event: switch_template_menu.post(event.x_root, event.y_root))
+    #fungus_label.bind("<Button-3>", lambda event: switch_template_menu.post(event.x_root, event.y_root))
 
     ### right click to copy colors to clipboard
     copy_colors_menu = Menu(root, tearoff=0)

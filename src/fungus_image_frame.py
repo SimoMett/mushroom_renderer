@@ -13,8 +13,8 @@ class FungusImageFrame:
         self.master = master
         self.frame = LabelFrame(self.master)
 
-        img = self.load_fungus([0xffffff for i in range(4)], self.current_fungus_type)
-        self.fungus_label = Label(self.frame, image=img)
+        self.img = self.load_fungus([0xffffff for i in range(4)], self.current_fungus_type)
+        self.fungus_label = Label(self.frame, image=self.img)
         self.fungus_label.pack()
 
     def grid(self, row, column):

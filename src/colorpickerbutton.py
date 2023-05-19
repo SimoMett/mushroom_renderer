@@ -6,6 +6,7 @@ from tkcolorpicker import askcolor
 def color_to_tuple(current_color):
     return current_color & 0xff, (current_color & 0xff00) >> 8, (current_color & 0xff0000) >> 16
 
+
 class ColorPickerButton:
 
     def __init__(self, master, command=None):
