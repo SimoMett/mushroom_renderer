@@ -1,13 +1,14 @@
 import cv2
 import numpy as np
 
-CRIMSON_FUNGUS_TYPE = 0
-WARPED_FUNGUS_TYPE = 1
 
 fungus_types = [
     "crimson",
     "warped"
 ]
+
+CRIMSON_FUNGUS_TYPE = fungus_types.index("crimson")
+WARPED_FUNGUS_TYPE = fungus_types.index("warped")
 
 texture_templates = [
     "_fungus_stelum",
