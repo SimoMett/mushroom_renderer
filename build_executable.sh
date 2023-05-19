@@ -1,1 +1,1 @@
-pyinstaller mycology_fungi_builder.spec
+pyinstaller mycology_fungi_builder.spec --noconfirm

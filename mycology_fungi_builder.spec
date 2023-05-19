@@ -3,13 +3,12 @@
 
 block_cipher = None
 
-
 a = Analysis(
     ['mycology_fungi_builder.py'],
     pathex=[],
     binaries=[],
-    datas=[],
-    hiddenimports=[],
+    datas=[ ('res', 'res') ],
+    hiddenimports=['tkcolorpicker', 'PIL._tkinter_finder'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
