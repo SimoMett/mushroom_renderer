@@ -3,8 +3,8 @@ from PIL import ImageTk, Image
 from tkcolorpicker import askcolor
 
 
-def color_to_tuple(current_color):
-    return current_color & 0xff, (current_color & 0xff00) >> 8, (current_color & 0xff0000) >> 16
+def tuple_to_color(color):
+    return (color[0] << 16) + (color[1] << 8) + color[2]
 
 
 class ColorPickerButton:
@@ -18,9 +18,10 @@ class ColorPickerButton:
         return
 
     def open_color_chooser(self):
-        color = askcolor(color_to_tuple(self.current_color), self.master)
+        hexa = "#"+str(hex(self.current_color)).removeprefix("0x")
+        color = askcolor(hexa, self.master)
         if color is not None and color[0] is not None:
-            self.update_color((color[0][2] << 16) + (color[0][1] << 8) + color[0][0])
+            self.update_color(tuple_to_color(color[0]))
         if self.command is not None:
             self.command()
         return
