@@ -81,13 +81,16 @@ if __name__ == "__main__":
 
     i = 0
     for name in template_names:
-        LabeledColorPickerButton(color_output_frame, name, i >> 1, i % 2)
+        color_picker = LabeledColorPickerButton(color_output_frame, name, i >> 1, i % 2)
+        color_pickers.append(color_picker)
         i += 1
     color_output_frame.grid(row=1, column=0)
 
     ### build resulting image frame
     image_frame = FungusImageFrame(root)
     image_frame.grid(row=0, column=1)
+    for color_picker in color_pickers:
+        color_picker.attach_fungus_image_frame(image_frame)
 
     ### right click to switch fungus
     switch_template_menu = Menu(root, tearoff=0)
@@ -100,8 +103,8 @@ if __name__ == "__main__":
     copy_colors_menu.add_command(label="Copy to clipboard as HEX", command=lambda: copy_colors_to_clipboard(True))
     copy_colors_menu.add_command(label="Copy to clipboard as INT", command=lambda: copy_colors_to_clipboard(False))
     color_output_frame.bind("<Button-3>", lambda evt: copy_colors_menu.post(evt.x_root, evt.y_root))
-    for button in color_pickers:
-        button.button.bind("<Button-3>", lambda evt: copy_colors_menu.post(evt.x_root, evt.y_root))
+    #for button in color_pickers:
+        #button.button.bind("<Button-3>", lambda evt: copy_colors_menu.post(evt.x_root, evt.y_root))
     for label in color_labels:
         label.bind("<Button-3>", lambda evt: copy_colors_menu.post(evt.x_root, evt.y_root))
 
