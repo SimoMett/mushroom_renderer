@@ -1,8 +1,6 @@
-import random
 from tkinter import *
 import pyperclip
 from PIL import ImageTk, Image
-from PIL.Image import Resampling
 from src.colorpickerbutton import ColorPickerButton
 from src.draw_fungus import draw_fungus, CRIMSON_FUNGUS_TYPE, WARPED_FUNGUS_TYPE
 
@@ -12,7 +10,7 @@ current_fungus_type = CRIMSON_FUNGUS_TYPE
 def load_fungus(colors, fungus_type):
     png = (Image.fromarray(draw_fungus(colors, fungus_type)))
     square_size = 550
-    resized_image = png.resize((square_size, square_size), Resampling.NEAREST)
+    resized_image = png.resize((square_size, square_size), Image.NEAREST)
     return ImageTk.PhotoImage(resized_image)
 
 
@@ -73,7 +71,7 @@ if __name__ == "__main__":
     min_height = 670
     min_width = 1030
     root = Tk()
-    root.iconphoto(True, ImageTk.PhotoImage(Image.open("res/icon.png").resize((32, 32), Resampling.NEAREST)))
+    root.iconphoto(True, ImageTk.PhotoImage(Image.open("res/icon.png").resize((32, 32), Image.NEAREST)))
     root.title("MycologyMC Fungi builder")
     root.geometry(str(min_width) + "x" + str(min_height))
     root.minsize(min_width, min_height)
