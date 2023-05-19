@@ -20,10 +20,13 @@ class ColorPickerButton:
     def open_color_chooser(self):
         color = askcolor(color_to_tuple(self.current_color), self.master)
         if color is not None and color[0] is not None:
-            self.current_color = (color[0][2] << 16) + (color[0][1] << 8) + color[0][0]
-            self.img = ImageTk.PhotoImage(Image.new('RGB', (24, 24), color=self.current_color))
-            self.button.configure(image=self.img)
-            self.button.photo = self.img
+            self.update_color((color[0][2] << 16) + (color[0][1] << 8) + color[0][0])
         if self.command is not None:
             self.command()
         return
+
+    def update_color(self, color):
+        self.current_color = color
+        self.img = ImageTk.PhotoImage(Image.new('RGB', (24, 24), color=self.current_color))
+        self.button.configure(image=self.img)
+        self.button.photo = self.img

@@ -1,7 +1,8 @@
+import random
 from tkinter import *
 import pyperclip
 from PIL import ImageTk, Image
-from src.draw_fungus import CRIMSON_FUNGUS_TYPE, WARPED_FUNGUS_TYPE
+from src.draw_fungus import CRIMSON_FUNGUS_TYPE
 from src.fungus_image_frame import FungusImageFrame
 from src.labeled_colorpicker_button import LabeledColorPickerButton
 
@@ -28,7 +29,10 @@ def hide_all_menus(arg):
     copy_colors_menu.unpost()
 
 def pick_random_colors():
-    print("test")
+    random_colors = [random.randint(0, 0xffffff) for i in range(4)]
+    for j in range(4):
+        color_pickers[j].color_picker_button.update_color(random_colors[j])
+        color_pickers[j].update()
 
 
 if __name__ == "__main__":
