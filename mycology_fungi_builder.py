@@ -52,8 +52,15 @@ def switch_to_warped():
     return
 
 
-def copy_colors_to_clipboard():
-    pyperclip.copy(str([color_pickers[j].current_color for j in range(4)]))
+def copy_colors_to_clipboard(as_hex=True):
+    if as_hex:
+        clipboard_string = str([hex(color_pickers[j].current_color) for j in range(4)]) \
+            .removeprefix("[") \
+            .removesuffix("]") \
+            .replace("'", "")
+    else:
+        clipboard_string = str([color_pickers[j].current_color for j in range(4)]).removeprefix("[").removesuffix("]")
+    pyperclip.copy(clipboard_string)
 
 
 def hide_all_menus(arg):
@@ -120,7 +127,7 @@ if __name__ == "__main__":
     # TODO wrap this fungus label in a class. It should be responsible to store the colors and draw the image
     image_frame = LabelFrame(root)
 
-    img = load_fungus([random.randint(0, 0xffffff) for i in range(4)], current_fungus_type)
+    img = load_fungus([0xffffff for i in range(4)], current_fungus_type)
     fungus_label = Label(image_frame, image=img)
     fungus_label.pack()
 
@@ -134,7 +141,8 @@ if __name__ == "__main__":
 
     ### right click to copy colors to clipboard
     copy_colors_menu = Menu(root, tearoff=0)
-    copy_colors_menu.add_command(label="Copy to clipboard", command=copy_colors_to_clipboard)
+    copy_colors_menu.add_command(label="Copy to clipboard as HEX", command=lambda: copy_colors_to_clipboard(True))
+    copy_colors_menu.add_command(label="Copy to clipboard as INT", command=lambda: copy_colors_to_clipboard(False))
     color_output_frame.bind("<Button-3>", lambda evt: copy_colors_menu.post(evt.x_root, evt.y_root))
     for button in color_pickers:
         button.button.bind("<Button-3>", lambda evt: copy_colors_menu.post(evt.x_root, evt.y_root))
