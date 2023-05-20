@@ -27,7 +27,7 @@ class ColorPickerButton:
         return
 
     def update_color(self, color):
-        self.current_color = color
+        self.current_color = (color & 0xFF00) + ((color & 0xFF) << 16) + (color >> 16) # WHY?
         self.img = ImageTk.PhotoImage(Image.new('RGB', (24, 24), color=self.current_color))
         self.button.configure(image=self.img)
         self.button.photo = self.img
