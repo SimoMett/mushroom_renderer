@@ -8,7 +8,6 @@ import colorsys
 
 
 def scale_notify(val):
-
     return
 
 
@@ -19,12 +18,14 @@ def copy_colors_to_clipboard(as_hex=True):
             .removesuffix("]") \
             .replace("'", "")
     else:
-        clipboard_string = str([color_pickers[j].color_picker_button.current_color for j in range(4)]).removeprefix("[").removesuffix("]")
+        clipboard_string = str([color_pickers[j].color_picker_button.current_color for j in range(4)]).removeprefix(
+            "[").removesuffix("]")
     pyperclip.copy(clipboard_string)
 
 
 def hide_all_menus(arg):
     copy_colors_menu.unpost()
+
 
 def pick_random_colors():
     random_colors = [random.randint(0, 0xffffff) for i in range(4)]
@@ -35,18 +36,18 @@ def pick_random_colors():
     hsv_random_colors = []
     for i in range(4):
         colr = str(random_colors[i])
-        rgb_color = tuple(int(colr[i:i+2], 16) for i in (0, 2, 4))
-        rgb_color = [val/255.0 for val in rgb_color]
-        (h,s,v) = colorsys.rgb_to_hsv(rgb_color[2], rgb_color[1], rgb_color[0])
-        (h,s,v)= (int(h * 179), int(s * 255), int(v * 255))
+        rgb_color = tuple(int(colr[i:i + 2], 16) for i in (0, 2, 4))
+        rgb_color = [val / 255.0 for val in rgb_color]
+        (h, s, v) = colorsys.rgb_to_hsv(rgb_color[2], rgb_color[1], rgb_color[0])
+        (h, s, v) = (int(h * 179), int(s * 255), int(v * 255))
         hsv_random_colors.append(h)
         hsv_random_colors.append(s)
         hsv_random_colors.append(v)
-    print(hsv_random_colors)
 
-    j=0
+    j = 0
     for scale in color_scales:
         scale.set(hsv_random_colors[color_scales.index(scale)])
+
 
 if __name__ == "__main__":
     ###  initialise window

@@ -7,6 +7,10 @@ def tuple_to_color(color):
     return (color[0] << 16) + (color[1] << 8) + color[2]
 
 
+def color_to_tuple(color):
+    return color >> 16, (color >> 8) & 0xff, color & 0xff
+
+
 class ColorPickerButton:
 
     def __init__(self, master, command=None):
@@ -18,8 +22,8 @@ class ColorPickerButton:
         return
 
     def open_color_chooser(self):
-        hexa = "#"+str(hex(self.current_color)).removeprefix("0x")
-        color = askcolor(hexa, self.master)
+        rgb = color_to_tuple(self.current_color)
+        color = askcolor(rgb, self.master)
         if color is not None and color[0] is not None:
             self.update_color(tuple_to_color(color[0]))
         if self.command is not None:
@@ -27,7 +31,8 @@ class ColorPickerButton:
         return
 
     def update_color(self, color):
-        self.current_color = (color & 0xFF00) + ((color & 0xFF) << 16) + (color >> 16) # WHY?
-        self.img = ImageTk.PhotoImage(Image.new('RGB', (24, 24), color=self.current_color))
+        self.current_color = color
+        rotated_color = (color & 0xFF00) + ((color & 0xFF) << 16) + (color >> 16)  # WHY?
+        self.img = ImageTk.PhotoImage(Image.new('RGB', (24, 24), color=rotated_color))  # WHYYYY??
         self.button.configure(image=self.img)
         self.button.photo = self.img
