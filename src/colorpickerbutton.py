@@ -23,7 +23,7 @@ class ColorPickerButton:
 
     def open_color_chooser(self):
         rgb = color_to_tuple(self.current_color)
-        color = askcolor(rgb, self.master)
+        color = askcolor(rgb, self.master)  # FIXME sometimes askcolor doesn't return the exact color (WHY?)
         if color is not None and color[0] is not None:
             self.update_color(tuple_to_color(color[0]))
         if self.command is not None:
