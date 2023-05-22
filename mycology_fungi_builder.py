@@ -1,12 +1,11 @@
 import random
 from tkinter import *
 from tkinter import filedialog
-import cv2
 import pyperclip
 from PIL import ImageTk, Image
-from src.draw_fungus import draw_fungus
+
+from src.colors_data_model import ColorsDataModel
 from src.fungus_image_frame import FungusImageFrame
-from src.hsv_color_scale import HsvColorScale
 from src.labeled_colorpicker_button import LabeledColorPickerButton
 import colorsys
 
@@ -70,6 +69,9 @@ if __name__ == "__main__":
     root.minsize(min_width, min_height)
     # root.maxsize(min_width, min_height)
 
+    ### core data model
+    colors_data_model = ColorsDataModel(0xffffff, 0xffffff, 0xffffff, 0xffffff)
+
     ### build color scales
     # FIXME broken + HSV is better suited
     # TODO update mechanism on color changes
@@ -91,6 +93,7 @@ if __name__ == "__main__":
     for name in template_names:
         color_picker = LabeledColorPickerButton(color_output_frame, name, i >> 1, i % 2)
         color_pickers.append(color_picker)
+        colors_data_model.subscribe(color_picker)
         i += 1
     color_output_frame.grid(row=1, column=0)
 
@@ -102,7 +105,9 @@ if __name__ == "__main__":
 
     ### build random colors and save buttons
     buttons_frame = Frame(root)
-    Button(buttons_frame, text="Random colors", command=pick_random_colors).grid(row=0)
+    random_cols_button = Button(buttons_frame, text="Random colors", command=pick_random_colors)
+    random_cols_button.grid(row=0)
+    colors_data_model.subscribe(random_cols_button)
     Button(buttons_frame, text="Save as png", command=save_as_png).grid(row=1)
     buttons_frame.grid(row=1, column=1)
 

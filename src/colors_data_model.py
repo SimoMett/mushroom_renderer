@@ -1,3 +1,5 @@
+import colorsys
+
 STELUM_COLOR = 0
 HEAD_COLOR = 1
 DETAILS_COLOR = 2
@@ -37,6 +39,12 @@ class ColorsDataModel:
 
     def get_color_as_rgb(self, color_id):
         return color_to_tuple(self.colors[color_id])
+
+    def get_color_as_hsv(self, color_id):
+        (r, g, b) = self.get_color_as_rgb(color_id)
+        (r, g, b) = (r / 255, g / 255, b / 255)
+        (h, s, v) = colorsys.rgb_to_hsv(r, g, b)
+        return int(h * 179), int(s * 255), int(v * 255)
 
     def notify_all_observers(self):
         for observer in self.observers:
