@@ -1,11 +1,15 @@
 import random
 from tkinter import *
 from tkinter import filedialog
+
+import cv2
 import pyperclip
 from PIL import ImageTk, Image
 
 from src.colors_data_model import ColorsDataModel
+from src.draw_fungus import draw_fungus
 from src.fungus_image_frame import FungusImageFrame
+from src.hsv_color_scale import HsvColorScale
 from src.labeled_colorpicker_button import LabeledColorPickerButton
 import colorsys
 
