@@ -1,5 +1,6 @@
 import random
 from tkinter import *
+from tkinter import filedialog
 import pyperclip
 from PIL import ImageTk, Image
 from src.fungus_image_frame import FungusImageFrame
@@ -46,8 +47,15 @@ def pick_random_colors():
         hsv_random_colors.append(v)
 
     j = 0
-    for scale in color_scales:
-        scale.set(hsv_random_colors[color_scales.index(scale)])
+    for scale_name in color_scales:
+        color_scales[scale_name].set(hsv_random_colors[0])  # FIXME
+
+
+def save_as_png():
+    selected_folder = filedialog.askdirectory(title="Select destination folder")
+    file_name = "file.png"
+    print(selected_folder + "/" + file_name)
+    return
 
 
 if __name__ == "__main__":
@@ -73,10 +81,10 @@ if __name__ == "__main__":
         for i in range(3):
             Label(frame, text=labels[i % 3]).grid(row=i, column=0)
             w2 = Scale(frame, from_=0, to=255, orient=HORIZONTAL, length=360,
-                       command=lambda val: scale_notify(name+"_"+labels[i % 3], val))
+                       command=lambda val: scale_notify(name + "_" + labels[i % 3], val))
             w2.set(127)
             w2.grid(row=i, column=1)
-            color_scales.update({name+"_"+labels[i % 3]: w2})
+            color_scales.update({name + "_" + labels[i % 3]: w2})
 
         frame.grid(row=template_names.index(name), column=0)
 
@@ -99,8 +107,11 @@ if __name__ == "__main__":
     for color_picker in color_pickers:
         color_picker.attach_fungus_image_frame(image_frame)
 
-    ### build random colors button
-    Button(root, text="Random colors", command=pick_random_colors).grid(row=1, column=1)
+    ### build random colors and save buttons
+    buttons_frame = Frame(root)
+    Button(buttons_frame, text="Random colors", command=pick_random_colors).grid(row=0)
+    Button(buttons_frame, text="Save as png", command=save_as_png).grid(row=1)
+    buttons_frame.grid(row=1, column=1)
 
     ### right click to copy colors to clipboard
     copy_colors_menu = Menu(root, tearoff=0)

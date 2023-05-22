@@ -18,7 +18,7 @@ texture_templates = [
 ]
 
 
-def draw_fungus(fungus_colors, fungus_type=0):
+def draw_fungus(fungus_colors, fungus_type=CRIMSON_FUNGUS_TYPE):
     out_images = []
     for texture in texture_templates:
         color_index = texture_templates.index(texture)
