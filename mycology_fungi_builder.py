@@ -1,10 +1,10 @@
 import random
 from tkinter import *
 from tkinter import filedialog
+import cv2
 import pyperclip
 from PIL import ImageTk, Image
-
-from src.colorpickerbutton import color_to_tuple
+from src.draw_fungus import draw_fungus
 from src.fungus_image_frame import FungusImageFrame
 from src.hsv_color_scale import HsvColorScale
 from src.labeled_colorpicker_button import LabeledColorPickerButton
@@ -51,8 +51,11 @@ def pick_random_colors():
 
 def save_as_png():
     selected_folder = filedialog.askdirectory(title="Select destination folder")
-    file_name = "file.png"
-    print(selected_folder + "/" + file_name)
+    colors = [image_frame.stelum_color, image_frame.head_color, image_frame.details_color, image_frame.details2_color]
+    file_name = str(colors)
+    result = draw_fungus(colors, image_frame.current_fungus_type)
+    result = cv2.cvtColor(result, cv2.COLOR_RGB2BGR)  # BGR to RGB, RGB to BGR, WTFFF
+    cv2.imwrite(selected_folder + "/" + file_name + ".png", result)
     return
 
 
