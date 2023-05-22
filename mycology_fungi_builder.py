@@ -14,6 +14,11 @@ from src.labeled_colorpicker_button import LabeledColorPickerButton
 import colorsys
 
 
+def scale_notify(scale_name, value):
+    print(scale_name, value, color_scales[scale_name].get())
+    return
+
+
 def copy_colors_to_clipboard(as_hex=True):
     if as_hex:
         clipboard_string = str([hex(color_pickers[j].color_picker_button.current_color) for j in range(4)]) \
@@ -80,11 +85,19 @@ if __name__ == "__main__":
     # FIXME broken + HSV is better suited
     # TODO update mechanism on color changes
     template_names = ["Stelum", "Head", "Details", "Details2"]
+    labels = ["Hue", "Saturation", "Brightness"]
     color_scales = dict()
     scales_frame = Frame(root)
     for name in template_names:
         frame = LabelFrame(scales_frame, text=name)
-        HsvColorScale(frame, name)
+        for i in range(3):
+            Label(frame, text=labels[i % 3]).grid(row=i, column=0)
+            w2 = Scale(frame, from_=0, to=255, orient=HORIZONTAL, length=360,
+                       command=lambda val: scale_notify(name + "_" + labels[i % 3], val))
+            w2.set(127)
+            w2.grid(row=i, column=1)
+            color_scales.update({name + "_" + labels[i % 3]: w2})
+
         frame.grid(row=template_names.index(name), column=0)
 
     scales_frame.grid(row=0, column=0)
