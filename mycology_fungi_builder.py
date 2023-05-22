@@ -7,7 +7,8 @@ from src.labeled_colorpicker_button import LabeledColorPickerButton
 import colorsys
 
 
-def scale_notify(val):
+def scale_notify(scale_name, value):
+    print(scale_name, value, color_scales[scale_name].get())
     return
 
 
@@ -65,17 +66,18 @@ if __name__ == "__main__":
     # TODO update mechanism on color changes
     template_names = ["Stelum", "Head", "Details", "Details2"]
     labels = ["Hue", "Saturation", "Brightness"]
-    color_scales = []
+    color_scales = dict()
     scales_frame = Frame(root)
     for name in template_names:
         frame = LabelFrame(scales_frame, text=name)
         for i in range(3):
             Label(frame, text=labels[i % 3]).grid(row=i, column=0)
-            w2 = Scale(frame, name=str(name).lower() + "_scale" + str(i), from_=0, to=255, orient=HORIZONTAL,
-                       length=360)
+            w2 = Scale(frame, from_=0, to=255, orient=HORIZONTAL, length=360,
+                       command=lambda val: scale_notify(name+"_"+labels[i % 3], val))
             w2.set(127)
             w2.grid(row=i, column=1)
-            color_scales.append(w2)
+            color_scales.update({name+"_"+labels[i % 3]: w2})
+
         frame.grid(row=template_names.index(name), column=0)
 
     scales_frame.grid(row=0, column=0)

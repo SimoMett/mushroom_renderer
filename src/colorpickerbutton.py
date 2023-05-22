@@ -11,6 +11,10 @@ def color_to_tuple(color):
     return color >> 16, (color >> 8) & 0xff, color & 0xff
 
 
+def get_rotated_idiot(color):
+    return (color & 0xFF00) + ((color & 0xFF) << 16) + (color >> 16)
+
+
 class ColorPickerButton:
 
     def __init__(self, master, command=None):
@@ -32,7 +36,6 @@ class ColorPickerButton:
 
     def update_color(self, color):
         self.current_color = color
-        rotated_color = (color & 0xFF00) + ((color & 0xFF) << 16) + (color >> 16)  # WHY?
-        self.img = ImageTk.PhotoImage(Image.new('RGB', (24, 24), color=rotated_color))  # WHYYYY??
+        self.img = ImageTk.PhotoImage(Image.new('RGB', (24, 24), color=get_rotated_idiot(color)))  # WHYYYY??
         self.button.configure(image=self.img)
         self.button.photo = self.img
