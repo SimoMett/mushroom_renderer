@@ -1,5 +1,7 @@
 import colorsys
 
+from src.labeled_colorpicker_button import LabeledColorPickerButton
+
 STELUM_COLOR = 0
 HEAD_COLOR = 1
 DETAILS_COLOR = 2
@@ -32,7 +34,15 @@ class ColorsDataModel:
         else:
             raise Exception("Unexpected type")
 
-        self.notify_all_observers()
+        self.update_observers()
+
+    def change_colors(self, colors):
+        self.colors = colors
+        self.update_observers()
+
+    def change_colors_hsv(self, hsv_colors):
+        # TODO change colors in hsv
+        self.update_buttons_observer()
 
     def get_color_as_int(self, color_id):
         return self.colors[color_id]
@@ -46,13 +56,14 @@ class ColorsDataModel:
         (h, s, v) = colorsys.rgb_to_hsv(r, g, b)
         return int(h * 179), int(s * 255), int(v * 255)
 
-    def notify_all_observers(self):
+    def update_observers(self):
         for observer in self.observers:
             observer.on_color_update()
-        pass
+
+    def update_buttons_observer(self):
+        for observer in self.observers:
+            if type(observer) is LabeledColorPickerButton:
+                observer.on_color_update()
 
     def subscribe(self, observer):
         self.observers.append(observer)
-
-
-
