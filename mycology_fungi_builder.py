@@ -36,7 +36,7 @@ def pick_random_colors():
 
 def save_as_png():
     selected_folder = filedialog.askdirectory(title="Select destination folder")
-    colors = [image_frame.stelum_color, image_frame.head_color, image_frame.details_color, image_frame.details2_color]
+    colors = colors_data_model.get_colors_as_int()
     file_name = str(colors)
     result = draw_fungus(colors, image_frame.current_fungus_type)
     result = cv2.cvtColor(result, cv2.COLOR_RGB2BGR)  # BGR to RGB, RGB to BGR, WTFFF
