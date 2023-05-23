@@ -22,7 +22,7 @@ class LabeledColorPickerButton:
         self.color_label.grid(row=0, column=1)
 
         # color picker button
-        self.color_picker_button = ColorPickerButton(self.frame, self.update)
+        self.color_picker_button = ColorPickerButton(self.frame, template_names.index(self.template_name), self.update)
         self.color_picker_button.button.grid(row=0, column=2)
 
         self.frame.grid(row=grid_placement_row, column=grid_placement_column)
@@ -31,12 +31,12 @@ class LabeledColorPickerButton:
     def attach_colors_data_model(self, colors_data_model):
         self.colors_data_model = colors_data_model
         self.colors_data_model.subscribe(self)
+        self.color_picker_button.attach_colors_data_model(self.colors_data_model)
 
     def on_color_update(self):
         color = self.colors_data_model.get_color_as_int(template_names.index(self.template_name))
         text = str(hex(color))
         self.color_label.configure(text=text)
-        self.color_picker_button.update_color(color)
 
     def update(self):
         color = self.color_picker_button.current_color

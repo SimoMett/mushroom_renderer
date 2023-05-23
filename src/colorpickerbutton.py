@@ -17,8 +17,10 @@ def get_rotated_idiot(color):
 
 class ColorPickerButton:
 
-    def __init__(self, master, command=None):
+    def __init__(self, master, template_id, colors_data_model=None, command=None):
+        self.colors_data_model = colors_data_model
         self.master = master
+        self.template_id = template_id
         self.current_color = 0xffffff
         self.command = command
         self.img = ImageTk.PhotoImage(Image.new('RGB', (24, 24), self.current_color))
@@ -28,13 +30,25 @@ class ColorPickerButton:
         rgb = color_to_tuple(self.current_color)
         color = askcolor(rgb, self.master)  # FIXME sometimes askcolor doesn't return the exact color (WHY?)
         if color is not None and color[0] is not None:
-            self.update_color(tuple_to_color(color[0]))
+            self.change_color(tuple_to_color(color[0]))
         if self.command is not None:
             self.command()
         return
 
-    def update_color(self, color):
+    def change_color(self, color):
         self.current_color = color
-        self.img = ImageTk.PhotoImage(Image.new('RGB', (24, 24), color=get_rotated_idiot(color)))  # WHYYYY??
+        self.colors_data_model.change_color(self.template_id, self.current_color)
+
+    def on_color_update(self):
+        self.current_color = self.colors_data_model.get_color_as_int(self.template_id)
+        self.update_image()
+
+    def update_image(self):
+        self.img = ImageTk.PhotoImage(Image.new('RGB', (24, 24), color=get_rotated_idiot(self.current_color)))  # WHYYYY??
         self.button.configure(image=self.img)
         self.button.photo = self.img
+
+    def attach_colors_data_model(self, colors_data_model):
+        self.colors_data_model = colors_data_model
+        self.colors_data_model.subscribe(self)
+
