@@ -1,6 +1,7 @@
 from tkinter import LabelFrame, Label, Menu
 
 from PIL import Image, ImageTk
+from PIL.Image import Resampling
 
 from src.colors_data_model import ColorsDataModel
 from src.draw_fungus import CRIMSON_FUNGUS_TYPE, WARPED_FUNGUS_TYPE, draw_fungus
