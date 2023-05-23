@@ -15,6 +15,11 @@ def tuple_to_color(color):
 def color_to_tuple(color):
     return color >> 16, (color >> 8) & 0xff, color & 0xff
 
+def hsv_tuple_to_color(hsv_color):
+    rgb_color = colorsys.hsv_to_rgb(hsv_color[0], hsv_color[1], hsv_color[2])
+    return tuple_to_color(rgb_color)
+
+
 
 class ColorsDataModel:
     def __init__(self, stelum_col, head_col, details_col, details2_col):
@@ -40,9 +45,13 @@ class ColorsDataModel:
         self.colors = colors
         self.update_observers()
 
-    def change_colors_hsv(self, hsv_colors):
+    def change_color_hsv(self, color_id, hsv_colors):
         # TODO change colors in hsv
+        self.colors[color_id] = hsv_tuple_to_color(hsv_colors)
         self.update_buttons_observer()
+
+    def get_colors_as_int(self):
+        return self.colors
 
     def get_color_as_int(self, color_id):
         return self.colors[color_id]

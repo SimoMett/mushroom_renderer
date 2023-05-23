@@ -37,24 +37,7 @@ def hide_all_menus(arg):
 
 def pick_random_colors():
     random_colors = [random.randint(0, 0xffffff) for i in range(4)]
-    for j in range(4):
-        color_pickers[j].color_picker_button.update_color(random_colors[j])
-        color_pickers[j].update()
-
-    hsv_random_colors = []
-    for i in range(4):
-        colr = str(random_colors[i])
-        rgb_color = tuple(int(colr[i:i + 2], 16) for i in (0, 2, 4))
-        rgb_color = [val / 255.0 for val in rgb_color]
-        (h, s, v) = colorsys.rgb_to_hsv(rgb_color[2], rgb_color[1], rgb_color[0])
-        (h, s, v) = (int(h * 179), int(s * 255), int(v * 255))
-        hsv_random_colors.append(h)
-        hsv_random_colors.append(s)
-        hsv_random_colors.append(v)
-
-    j = 0
-    for scale_name in color_scales:
-        color_scales[scale_name].set(hsv_random_colors[0])  # FIXME
+    colors_data_model.change_colors(random_colors)
 
 
 def save_as_png():
@@ -110,21 +93,20 @@ if __name__ == "__main__":
     for name in template_names:
         color_picker = LabeledColorPickerButton(color_output_frame, name, i >> 1, i % 2)
         color_pickers.append(color_picker)
-        colors_data_model.subscribe(color_picker)
+        color_picker.attach_colors_data_model(colors_data_model)
         i += 1
     color_output_frame.grid(row=1, column=0)
 
     ### build resulting image frame
     image_frame = FungusImageFrame(root)
     image_frame.grid(row=0, column=1)
-    for color_picker in color_pickers:
-        color_picker.attach_fungus_image_frame(image_frame)
+    image_frame.attach_colors_data_model(colors_data_model)
 
     ### build random colors and save buttons
     buttons_frame = Frame(root)
     random_cols_button = Button(buttons_frame, text="Random colors", command=pick_random_colors)
     random_cols_button.grid(row=0)
-    colors_data_model.subscribe(random_cols_button)
+    #random_cols_button.attach_colors_data_model(colors_data_model)
     Button(buttons_frame, text="Save as png", command=save_as_png).grid(row=1)
     buttons_frame.grid(row=1, column=1)
 

@@ -6,7 +6,7 @@ from src.colorpickerbutton import ColorPickerButton
 class LabeledColorPickerButton:
 
     def __init__(self, master_frame, name, grid_placement_row, grid_placement_column):
-        # self.current_color = 0xffffff # useless?
+        self.colors_data_model = None
         self.template_name = name
         self.fungus_image_frame = None
         self.frame = Frame(master_frame)
@@ -27,6 +27,10 @@ class LabeledColorPickerButton:
 
         self.frame.grid(row=grid_placement_row, column=grid_placement_column)
         return
+
+    def attach_colors_data_model(self, colors_data_model):
+        self.colors_data_model = colors_data_model
+
 
     def attach_fungus_image_frame(self, fungus_image_frame):
         self.fungus_image_frame = fungus_image_frame
