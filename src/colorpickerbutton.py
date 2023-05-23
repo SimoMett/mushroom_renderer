@@ -17,17 +17,12 @@ def get_rotated_idiot(color):
 
 class ColorPickerButton:
 
-    def __init__(self, master, colors_data_model=None, command=None):
+    def __init__(self, master, command=None):
         self.master = master
-        self.colors_data_model = colors_data_model
+        self.current_color = 0xffffff
         self.command = command
-        self.img = ImageTk.PhotoImage(Image.new('RGB', (24, 24), 0))
+        self.img = ImageTk.PhotoImage(Image.new('RGB', (24, 24), self.current_color))
         self.button = ttk.Button(self.master, image=self.img, command=self.open_color_chooser)
-        return
-
-    def attach_colors_data_model(self, colors_data_model):
-        self.colors_data_model = colors_data_model
-        self.colors_data_model.subscribe(self)
 
     def open_color_chooser(self):
         rgb = color_to_tuple(self.current_color)

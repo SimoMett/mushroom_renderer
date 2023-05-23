@@ -9,7 +9,6 @@ class LabeledColorPickerButton:
     def __init__(self, master_frame, name, grid_placement_row, grid_placement_column):
         self.colors_data_model = None
         self.template_name = name
-        self.fungus_image_frame = None
         self.frame = Frame(master_frame)
 
         # template name label
@@ -33,29 +32,13 @@ class LabeledColorPickerButton:
         self.colors_data_model = colors_data_model
         self.colors_data_model.subscribe(self)
 
-
-    def attach_fungus_image_frame(self, fungus_image_frame):
-        self.fungus_image_frame = fungus_image_frame
-
     def on_color_update(self):
         color = self.colors_data_model.get_color_as_int(template_names.index(self.template_name))
         text = str(hex(color))
         self.color_label.configure(text=text)
+        self.color_picker_button.update_color(color)
 
     def update(self):
         color = self.color_picker_button.current_color
         text = str(hex(color))
         self.color_label.configure(text=text)
-        # update image
-        if self.fungus_image_frame is not None:
-            if self.template_name == "Stelum":
-                self.fungus_image_frame.update_stelum_color(color)
-            elif self.template_name == "Head":
-                self.fungus_image_frame.update_head_color(color)
-            elif self.template_name == "Details":
-                self.fungus_image_frame.update_details_color(color)
-            elif self.template_name == "Details2":
-                self.fungus_image_frame.update_details2_color(color)
-            else:  # just in case
-                raise RuntimeError("this self.template_name is not allowed:", self.template_name)
-        return
