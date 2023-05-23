@@ -22,53 +22,52 @@ class HsvColorScale:
         self.hsv_scales = [None, None, None]
 
         Label(master, text="Hue").grid(row=0, column=0)
-        self.hsv_scales[0] = Scale(master, from_=0, to=255, orient=HORIZONTAL, length=360,
-                                       command=self.hue_change)
+        self.hsv_scales[0] = Scale(master, from_=0, to=255, orient=HORIZONTAL, length=360, command=self.hue_change)
         self.hsv_scales[0].grid(row=0, column=1)
 
         Label(master, text="Saturation").grid(row=1, column=0)
-        self.hsv_scales[1] = Scale(master, from_=0, to=255, orient=HORIZONTAL, length=360,
-                                   command=self.saturation_change)
+        self.hsv_scales[1] = Scale(master, from_=0, to=255, orient=HORIZONTAL, length=360, command=self.sat_change)
         self.hsv_scales[1].grid(row=1, column=1)
 
         Label(master, text="Value").grid(row=2, column=0)
-        self.hsv_scales[2] = Scale(master, from_=0, to=179, orient=HORIZONTAL, length=360,
-                                   command=self.value_change)
+        self.hsv_scales[2] = Scale(master, from_=0, to=179, orient=HORIZONTAL, length=360, command=self.val_change)
         self.hsv_scales[2].grid(row=2, column=1)
-            # color_scales.update({template_name + "_" + labels[i % 3]: w2})
+
         self.hsv_scales[0].set(0)
         self.hsv_scales[1].set(0)
         self.hsv_scales[2].set(255)
 
     def attach_colors_data_model(self, colors_data_model):
         self.colors_data_model = colors_data_model
-        #self.colors_data_model.subscribe(self) # FIXME update of scales
+        self.colors_data_model.subscribe(self)  # FIXME update of scales
 
     def on_color_update(self):
         template_id = template_names.index(self.template_name)
-        hsv = rgb_to_hsv(color_to_tuple( self.colors_data_model.get_color_as_int(template_id)))
+        hsv = rgb_to_hsv(color_to_tuple(self.colors_data_model.get_color_as_int(template_id)))
+        self.hsv_scales[0].configure(command=None)
+        self.hsv_scales[1].configure(command=None)
+        self.hsv_scales[2].configure(command=None)
         for i in range(3):
             self.hsv_scales[i].set(hsv[i])
-
-
-    def change_color(self, color):
-        print("TODO")
+        self.hsv_scales[0].configure(command=self.hue_change)
+        self.hsv_scales[1].configure(command=self.sat_change)
+        self.hsv_scales[2].configure(command=self.val_change)
 
     def update_scales(self):
         pass
 
     def hue_change(self, val):
+        print("test")
         template_id = template_names.index(self.template_name)
         hsv = (int(val), self.hsv_scales[1].get(), self.hsv_scales[2].get())
         self.colors_data_model.change_color_hsv(template_id, hsv)
 
-    def saturation_change(self, val):
+    def sat_change(self, val):
         template_id = template_names.index(self.template_name)
         hsv = (self.hsv_scales[0].get(), int(val), self.hsv_scales[2].get())
         self.colors_data_model.change_color_hsv(template_id, hsv)
 
-    def value_change(self, val):
+    def val_change(self, val):
         template_id = template_names.index(self.template_name)
         hsv = (self.hsv_scales[0].get(), self.hsv_scales[1].get(), int(val))
         self.colors_data_model.change_color_hsv(template_id, hsv)
-
