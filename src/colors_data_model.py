@@ -1,6 +1,7 @@
 import colorsys
 
-from src.labeled_colorpicker_button import LabeledColorPickerButton
+from src.color_functions import tuple_to_color, hsv_tuple_to_color, color_to_tuple
+from src.hsv_color_scale import HsvColorScale
 
 STELUM_COLOR = 0
 HEAD_COLOR = 1
@@ -8,22 +9,9 @@ DETAILS_COLOR = 2
 DETAILS2_COLOR = 3
 
 
-def tuple_to_color(color):
-    return (color[0] << 16) + (color[1] << 8) + color[2]
-
-
-def color_to_tuple(color):
-    return color >> 16, (color >> 8) & 0xff, color & 0xff
-
-def hsv_tuple_to_color(hsv_color):
-    rgb_color = colorsys.hsv_to_rgb(hsv_color[0], hsv_color[1], hsv_color[2])
-    return tuple_to_color(rgb_color)
-
-
-
 class ColorsDataModel:
     def __init__(self, stelum_col, head_col, details_col, details2_col):
-        self.colors = [0, 0, 0, 0]
+        self.colors = [0xffffff, 0xffffff, 0xffffff, 0xffffff]
         self.colors[STELUM_COLOR] = stelum_col
         self.colors[HEAD_COLOR] = head_col
         self.colors[DETAILS_COLOR] = details_col
@@ -46,9 +34,8 @@ class ColorsDataModel:
         self.update_observers()
 
     def change_color_hsv(self, color_id, hsv_colors):
-        # TODO change colors in hsv
         self.colors[color_id] = hsv_tuple_to_color(hsv_colors)
-        self.update_buttons_observer()
+        self.update_except_scales_observers()
 
     def get_colors_as_int(self):
         return self.colors
@@ -69,9 +56,9 @@ class ColorsDataModel:
         for observer in self.observers:
             observer.on_color_update()
 
-    def update_buttons_observer(self):
+    def update_except_scales_observers(self):
         for observer in self.observers:
-            if type(observer) is LabeledColorPickerButton:
+            if type(observer) is not HsvColorScale:
                 observer.on_color_update()
 
     def subscribe(self, observer):

@@ -2,13 +2,7 @@ import tkinter as ttk
 from PIL import ImageTk, Image
 from tkcolorpicker import askcolor
 
-
-def tuple_to_color(color):
-    return (color[0] << 16) + (color[1] << 8) + color[2]
-
-
-def color_to_tuple(color):
-    return color >> 16, (color >> 8) & 0xff, color & 0xff
+from src.color_functions import color_to_tuple, tuple_to_color
 
 
 def get_rotated_idiot(color):
