@@ -36,7 +36,7 @@ class FungusImageFrame:
 
     def load_fungus(self, colors, fungus_type):
         png = Image.fromarray(draw_fungus(colors, fungus_type))
-        resized_image = png.resize((self.frame_square_size, self.frame_square_size), Image.NEAREST)
+        resized_image = png.resize((self.frame_square_size, self.frame_square_size), Resampling.NEAREST)
         return ImageTk.PhotoImage(resized_image)
 
     def on_color_update(self):
