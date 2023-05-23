@@ -64,7 +64,7 @@ class HsvColorScale:
 
     def saturation_change(self, val):
         template_id = template_names.index(self.template_name)
-        hsv = (self.hsv_scales[1].get(), int(val), self.hsv_scales[2].get())
+        hsv = (self.hsv_scales[0].get(), int(val), self.hsv_scales[2].get())
         self.colors_data_model.change_color_hsv(template_id, hsv)
 
     def value_change(self, val):
