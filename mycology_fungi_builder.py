@@ -11,12 +11,6 @@ from src.draw_fungus import draw_fungus
 from src.fungus_image_frame import FungusImageFrame
 from src.hsv_color_scale import HsvColorScale
 from src.labeled_colorpicker_button import LabeledColorPickerButton
-import colorsys
-
-
-def scale_notify(scale_name, value):
-    print(scale_name, value, color_scales[scale_name].get())
-    return
 
 
 def copy_colors_to_clipboard(as_hex=True):
@@ -65,21 +59,15 @@ if __name__ == "__main__":
     colors_data_model = ColorsDataModel(0xffffff, 0xffffff, 0xffffff, 0xffffff)
 
     ### build color scales
-    # FIXME broken + HSV is better suited
-    # TODO update mechanism on color changes
+    # FIXME broken
     template_names = ["Stelum", "Head", "Details", "Details2"]
     labels = ["Hue", "Saturation", "Brightness"]
     color_scales = dict()
     scales_frame = Frame(root)
     for name in template_names:
         frame = LabelFrame(scales_frame, text=name)
-        for i in range(3):
-            Label(frame, text=labels[i % 3]).grid(row=i, column=0)
-            w2 = Scale(frame, from_=0, to=255, orient=HORIZONTAL, length=360,
-                       command=lambda val: scale_notify(name + "_" + labels[i % 3], val))
-            w2.set(127)
-            w2.grid(row=i, column=1)
-            color_scales.update({name + "_" + labels[i % 3]: w2})
+        hsv_scale = HsvColorScale(frame, name)
+        hsv_scale.attach_colors_data_model(colors_data_model)
 
         frame.grid(row=template_names.index(name), column=0)
 

@@ -14,6 +14,7 @@ hsv_labels = ["Hue", "Saturation", "Brightness"]
 class HsvColorScale:
 
     def __init__(self, master, template_name):
+        self.colors_data_model = None
         self.template_name = template_name
         self.hsv_scales = [None, None, None]
         for i in range(3):
@@ -25,6 +26,13 @@ class HsvColorScale:
             self.hsv_scales[i].grid(row=i, column=1)
             # color_scales.update({template_name + "_" + labels[i % 3]: w2})
 
+    def attach_colors_data_model(self, colors_data_model):
+        self.colors_data_model = colors_data_model
+        self.colors_data_model.subscribe(self)
+
+    def on_color_update(self):
+        print("TODO")
+
     def change_color(self, color):
         pass
 
@@ -35,3 +43,4 @@ class HsvColorScale:
         print(self.template_name + "_" + channel, val)
         # TODO calculate rgb from hsv
         # TODO update colors in buttons and figure
+
