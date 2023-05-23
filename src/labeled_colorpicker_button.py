@@ -2,6 +2,7 @@ from tkinter import Frame, Label
 
 from src.colorpickerbutton import ColorPickerButton
 
+template_names = ["Stelum", "Head", "Details", "Details2"]
 
 class LabeledColorPickerButton:
 
@@ -30,10 +31,16 @@ class LabeledColorPickerButton:
 
     def attach_colors_data_model(self, colors_data_model):
         self.colors_data_model = colors_data_model
+        self.colors_data_model.subscribe(self)
 
 
     def attach_fungus_image_frame(self, fungus_image_frame):
         self.fungus_image_frame = fungus_image_frame
+
+    def on_color_update(self):
+        color = self.colors_data_model.get_color_as_int(template_names.index(self.template_name))
+        text = str(hex(color))
+        self.color_label.configure(text=text)
 
     def update(self):
         color = self.color_picker_button.current_color
