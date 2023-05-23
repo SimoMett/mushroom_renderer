@@ -39,7 +39,7 @@ def save_as_png():
     colors = colors_data_model.get_colors_as_int()
     file_name = str(colors)
     result = draw_fungus(colors, image_frame.current_fungus_type)
-    result = cv2.cvtColor(result, cv2.COLOR_RGB2BGR)  # BGR to RGB, RGB to BGR, WTFFF
+    result = cv2.cvtColor(result, cv2.COLOR_RGB2BGRA)  # BGR to RGB, RGB to BGR, WTFFF
     cv2.imwrite(selected_folder + "/" + file_name + ".png", result)
     return
 
