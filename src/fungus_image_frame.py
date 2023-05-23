@@ -10,7 +10,7 @@ class FungusImageFrame:
 
     def __init__(self, master, colors_data_model=None):
         self.colors_data_model = colors_data_model
-        colors_array = [0, 0xff, 0xff, 0]
+        colors_array = [0xffffff, 0xffffff, 0xffffff, 0xffffff]
         self.current_fungus_type = CRIMSON_FUNGUS_TYPE
 
         self.frame_square_size = 550
@@ -40,16 +40,13 @@ class FungusImageFrame:
         return ImageTk.PhotoImage(resized_image)
 
     def on_color_update(self):
-        new_colors = self.colors_data_model.get_colors_as_int()
-        self.img = self.load_fungus(new_colors, self.current_fungus_type)
+        self.img = self.load_fungus(self.colors_data_model.get_colors_as_int(), self.current_fungus_type)
         self.fungus_label.configure(image=self.img)
 
     # TODO reimplement all the methods below
 
     def update_template(self):
-        self.img = self.load_fungus([self.stelum_color, self.head_color, self.details_color, self.details2_color],
-                                    self.current_fungus_type)
-        self.fungus_label.configure(image=self.img)
+        self.on_color_update()
 
     def update_stelum_color(self, new_color):
         self.stelum_color = new_color
