@@ -44,9 +44,9 @@ class HsvColorScale:
     def on_color_update(self):
         template_id = template_names.index(self.template_name)
         hsv = rgb_to_hsv(color_to_tuple(self.colors_data_model.get_color_as_int(template_id)))
-        self.hsv_scales[0].configure(command=None)
-        self.hsv_scales[1].configure(command=None)
-        self.hsv_scales[2].configure(command=None)
+        self.hsv_scales[0].configure(command="")
+        self.hsv_scales[1].configure(command="")
+        self.hsv_scales[2].configure(command="")
         for i in range(3):
             self.hsv_scales[i].set(hsv[i])
         self.hsv_scales[0].configure(command=self.hue_change)
