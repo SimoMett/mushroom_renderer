@@ -7,7 +7,7 @@ a = Analysis(
     ['mycology_fungi_builder.py'],
     pathex=[],
     binaries=[],
-    datas=[ ('res', 'res') ],
+    datas=[ ['res', 'res'], ["run.sh", "."] ],
     hiddenimports=['tkcolorpicker', 'PIL._tkinter_finder'],
     hookspath=[],
     hooksconfig={},
