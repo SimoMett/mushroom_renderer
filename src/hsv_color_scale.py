@@ -39,7 +39,7 @@ class HsvColorScale:
 
     def attach_colors_data_model(self, colors_data_model):
         self.colors_data_model = colors_data_model
-        self.colors_data_model.subscribe(self)  # FIXME update of scales
+        self.colors_data_model.subscribe(self)
 
     def on_color_update(self):
         template_id = template_names.index(self.template_name)

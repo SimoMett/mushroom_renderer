@@ -4,6 +4,7 @@ from src.colorpickerbutton import ColorPickerButton
 
 template_names = ["Stelum", "Head", "Details", "Details2"]
 
+
 class LabeledColorPickerButton:
 
     def __init__(self, master_frame, name, grid_placement_row, grid_placement_column):
@@ -14,8 +15,6 @@ class LabeledColorPickerButton:
         # template name label
         self.template_label = Label(self.frame, text=self.template_name)
         self.template_label.grid(row=0, column=0)
-        # TODO right click menu
-        # label.bind("<Button-3>", lambda evt: copy_colors_menu.post(evt.x_root, evt.y_root))
 
         # color label
         self.color_label = Label(self.frame, text="0xffffff")

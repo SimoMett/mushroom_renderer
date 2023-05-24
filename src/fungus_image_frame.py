@@ -1,7 +1,7 @@
 from tkinter import LabelFrame, Label, Menu
 
+import PIL.Image
 from PIL import Image, ImageTk
-from PIL.Image import Resampling
 
 from src.colors_data_model import ColorsDataModel
 from src.draw_fungus import CRIMSON_FUNGUS_TYPE, WARPED_FUNGUS_TYPE, draw_fungus
@@ -37,33 +37,15 @@ class FungusImageFrame:
 
     def load_fungus(self, colors, fungus_type):
         png = Image.fromarray(draw_fungus(colors, fungus_type))
-        resized_image = png.resize((self.frame_square_size, self.frame_square_size), Resampling.NEAREST)
+        resized_image = png.resize((self.frame_square_size, self.frame_square_size), PIL.Image.Resampling.NEAREST)
         return ImageTk.PhotoImage(resized_image)
 
     def on_color_update(self):
         self.img = self.load_fungus(self.colors_data_model.get_colors_as_int(), self.current_fungus_type)
         self.fungus_label.configure(image=self.img)
 
-    # TODO reimplement all the methods below
-
     def update_template(self):
         self.on_color_update()
-
-    def update_stelum_color(self, new_color):
-        self.stelum_color = new_color
-        self.update_colors()
-
-    def update_head_color(self, new_color):
-        self.head_color = new_color
-        self.update_colors()
-
-    def update_details_color(self, new_color):
-        self.details_color = new_color
-        self.update_colors()
-
-    def update_details2_color(self, new_color):
-        self.details2_color = new_color
-        self.update_colors()
 
     def switch_to_crimson(self):
         self.current_fungus_type = CRIMSON_FUNGUS_TYPE
