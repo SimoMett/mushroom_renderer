@@ -20,13 +20,15 @@ def copy_colors_to_clipboard(as_hex=True):
             .removesuffix("]") \
             .replace("'", "")
     else:
-        clipboard_string = str([color_pickers[j].color_picker_button.current_color for j in range(4)]).removeprefix(
-            "[").removesuffix("]")
+        clipboard_string = str([color_pickers[j].color_picker_button.current_color for j in range(4)]) \
+            .removeprefix("[") \
+            .removesuffix("]")
     pyperclip.copy(clipboard_string)
 
 
 def hide_all_menus(arg):
     copy_colors_menu.unpost()
+    image_frame.switch_template_menu.unpost()
 
 
 def pick_random_colors():
@@ -59,7 +61,6 @@ if __name__ == "__main__":
     colors_data_model = ColorsDataModel(0xffffff, 0xffffff, 0xffffff, 0xffffff)
 
     ### build color scales
-    # FIXME broken
     template_names = ["Stelum", "Head", "Details", "Details2"]
     labels = ["Hue", "Saturation", "Brightness"]
     color_scales = dict()
@@ -94,7 +95,6 @@ if __name__ == "__main__":
     buttons_frame = Frame(root)
     random_cols_button = Button(buttons_frame, text="Random colors", command=pick_random_colors)
     random_cols_button.grid(row=0)
-    #random_cols_button.attach_colors_data_model(colors_data_model)
     Button(buttons_frame, text="Save as png", command=save_as_png).grid(row=1)
     buttons_frame.grid(row=1, column=1)
 
@@ -108,6 +108,6 @@ if __name__ == "__main__":
         picker.color_label.bind("<Button-3>", lambda evt: copy_colors_menu.post(evt.x_root, evt.y_root))
         picker.template_label.bind("<Button-3>", lambda evt: copy_colors_menu.post(evt.x_root, evt.y_root))
 
-    root.bind("<Button-1>", lambda arg: image_frame.switch_template_menu.unpost())
+    root.bind("<Button-1>", hide_all_menus)
 
     root.mainloop()
