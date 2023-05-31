@@ -37,12 +37,13 @@ def pick_random_colors():
 
 
 def save_as_png():
-    selected_folder = filedialog.askdirectory(title="Select destination folder")
-    colors = colors_data_model.get_colors_as_int()
-    file_name = str(colors)
-    result = draw_fungus(colors, image_frame.current_fungus_type)
-    result = cv2.cvtColor(result, cv2.COLOR_RGB2BGRA)  # BGR to RGB, RGB to BGR, WTFFF
-    cv2.imwrite(selected_folder + "/" + file_name + ".png", result)
+    selected_folder = filedialog.askdirectory(title="Select destination folder", initialdir="~/")
+    if len(selected_folder) != 0:
+        colors = colors_data_model.get_colors_as_int()
+        file_name = str(colors)
+        result = draw_fungus(colors, image_frame.current_fungus_type)
+        result = cv2.cvtColor(result, cv2.COLOR_RGB2BGRA)  # BGR to RGB, RGB to BGR, WTFFF
+        cv2.imwrite(selected_folder + "/" + file_name + ".png", result)
     return
 
 
@@ -51,7 +52,8 @@ if __name__ == "__main__":
     min_height = 660
     min_width = 1000
     root = Tk()
-    root.iconphoto(True, ImageTk.PhotoImage(Image.open("res/icon.png").resize((32, 32), Image.NEAREST)))
+    raw_image = ImageTk.PhotoImage(Image.open("res/icon.png").resize((32, 32), Image.NEAREST))
+    root.iconphoto(True, raw_image)
     root.title("MycologyMC Fungi builder")
     root.geometry(str(min_width) + "x" + str(min_height))
     root.minsize(min_width, min_height)
