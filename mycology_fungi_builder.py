@@ -5,6 +5,7 @@ from tkinter import filedialog
 import cv2
 import pyperclip
 from PIL import ImageTk, Image
+import svg
 
 from src.colors_data_model import ColorsDataModel
 from src.draw_fungus import draw_fungus
@@ -44,6 +45,28 @@ def save_as_png():
         result = draw_fungus(colors, image_frame.current_fungus_type)
         result = cv2.cvtColor(result, cv2.COLOR_RGB2BGRA)  # BGR to RGB, RGB to BGR, WTFFF
         cv2.imwrite(selected_folder + "/" + file_name + ".png", result)
+
+        # svg
+        result = cv2.cvtColor(result, cv2.COLOR_BGRA2RGBA)
+        _elements = []
+        for i in range(16):
+            for j in range(16):
+                if result[j][i][3] == 0:
+                    continue
+                color = hex((result[j][i][0] << 16) + (result[j][i][1] << 8) + result[j][i][2])
+                box = svg.Rect(x=i, y=j, width=1, height=1,
+                               fill=str(color).replace("0x", "#"))
+                _elements.append(box)
+
+        canvas = svg.SVG(
+            width=16,
+            height=16,
+            elements=_elements
+        )
+        f = open(selected_folder + "/" + file_name + ".svg", "w")
+        f.write(canvas.__str__())
+        f.close()
+
     return
 
 
