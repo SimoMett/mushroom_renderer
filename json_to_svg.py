@@ -12,9 +12,9 @@ def export_svg(file_name):
     data = json.load(f)
     colors = data["colors"]
     fungus_type = str(data["type"])
+    f.close()
     fungus_type = fungus_type.removesuffix("_fungus")
     fungus_type = fungus_type.removeprefix("colored_")
-    f.close()
     file_name = file_name.removesuffix(".json")
     result = draw_fungus(colors, fungus_types.index(fungus_type))
     result = cv2.cvtColor(result, cv2.COLOR_RGB2RGBA)
