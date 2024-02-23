@@ -4,7 +4,7 @@ import cv2
 import svg
 import sys
 
-from src.draw_fungus import CRIMSON_FUNGUS_TYPE, WARPED_FUNGUS_TYPE, draw_fungus, fungus_types
+from src.draw_fungus import draw_fungus, fungus_types
 
 
 def export_svg(file_name):
