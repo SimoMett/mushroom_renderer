@@ -6,7 +6,7 @@ from kivy.uix.button import Button
 from kivy.uix.colorpicker import ColorPicker
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, SlideTransition
 
 from src.draw_fungus import draw_fungus, WARPED_FUNGUS_TYPE
 
@@ -27,61 +27,69 @@ def get_fungus_image_widget():
     return image
 
 
+class MainScreen(Screen):
+    def __init__(self, **kwargs):
+        super(MainScreen, self).__init__(**kwargs)
+
+        layout = BoxLayout(orientation='vertical')
+
+        layout.add_widget(get_fungus_image_widget())
+
+        grid_layout = GridLayout(cols=2)
+        testButton = Button(text='Stelum')
+        testButton.bind(on_release=self.changer)
+        grid_layout.add_widget(testButton)
+        grid_layout.add_widget(Button(text='Random stelum'))
+        grid_layout.add_widget(Button(text='Head'))
+        grid_layout.add_widget(Button(text='Random head'))
+        grid_layout.add_widget(Button(text='Details1'))
+        grid_layout.add_widget(Button(text='Random details1'))
+        grid_layout.add_widget(Button(text='Details2'))
+        grid_layout.add_widget(Button(text='Random details2'))
+
+        layout.add_widget(grid_layout)
+        layout.add_widget(Button(text='Random all'))
+        self.add_widget(layout)
+
+    def changer(self, *args):
+        self.manager.current = 'screen2'
 
 
+class SecondScreen(Screen):
 
-def get_main_screen():
-    layout = BoxLayout(orientation='vertical')
+    def __init__(self, **kwargs):
+        super(SecondScreen, self).__init__(**kwargs)
 
-    layout.add_widget(get_fungus_image_widget())
+        layout = BoxLayout(orientation='vertical')
+        layout.add_widget(get_fungus_image_widget())
+        colorpicker = ColorPicker()
+        layout.add_widget(colorpicker)
 
-    gridLayout = GridLayout(cols=2)
-    testButton = Button(text='Stelum')
-    testButton.bind(on_release=MycologyApp.button_press)
-    gridLayout.add_widget(testButton)
-    gridLayout.add_widget(Button(text='Random stelum'))
-    gridLayout.add_widget(Button(text='Head'))
-    gridLayout.add_widget(Button(text='Random head'))
-    gridLayout.add_widget(Button(text='Details1'))
-    gridLayout.add_widget(Button(text='Random details1'))
-    gridLayout.add_widget(Button(text='Details2'))
-    gridLayout.add_widget(Button(text='Random details2'))
+        grid_layout = GridLayout(cols=2)
+        ok_button = Button(text="ok")
+        ok_button.bind(on_release=self.changer)
+        cancel_button = Button(text="cancel")
+        cancel_button.bind(on_release=self.changer)
+        grid_layout.add_widget(ok_button)
+        grid_layout.add_widget(cancel_button)
 
-    layout.add_widget(gridLayout)
-    layout.add_widget(Button(text='Random all'))
-    screen = Screen(name="prima")
-    screen.add_widget(layout)
-    return screen
+        layout.add_widget(grid_layout)
 
+        self.add_widget(layout)
 
-def get_second_screen():
-    layout = BoxLayout(orientation='vertical')
-
-    layout.add_widget(get_fungus_image_widget())
-
-    colorpicker = ColorPicker()
-    layout.add_widget(colorpicker)
-
-    screen = Screen(name="seconda")
-    screen.add_widget(layout)
-    return screen
+    def changer(self, *args):
+        self.manager.current = 'screen1'
 
 
 class MycologyApp(App):
 
-
     def build(self):
-        self.sm = ScreenManager()
-        self.main_screen = get_main_screen()
-        self.sm.add_widget(self.main_screen)
-        self.second_screen = get_second_screen()
-        self.sm.add_widget(self.second_screen)
-
-        return get_main_screen()
-
-    def button_press(self):
-        self.sm.switch_to(self.second_screen)
-        print("test")
+        screen_manager = ScreenManager(transition=NoTransition())
+        screen1 = MainScreen(name='screen1')
+        screen2 = SecondScreen(name='screen2')
+        screen_manager.add_widget(screen1)
+        screen_manager.add_widget(screen2)
+        return screen_manager
 
 
 if __name__ == '__main__':
