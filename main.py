@@ -1,4 +1,3 @@
-import cv2
 import numpy as np
 from kivy.app import App
 from kivy.graphics.texture import Texture
