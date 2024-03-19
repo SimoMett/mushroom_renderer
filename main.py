@@ -91,11 +91,13 @@ class MainScreen(Screen):
 
         self.fungus_image = FungusImage()
         fungus_model.subscribe(self.fungus_image)
-        self.fungus_image.bind(on_touch_down=self.switch_fungus_type)
         layout.add_widget(self.fungus_image)
 
         grid_layout = GridLayout(cols=2)
 
+        type_button = Button(text="Type")
+        type_button.bind(on_release=self.switch_fungus_type)
+        save_button = Button(text="Save")
         stelum_button = Button(text='Stelum')
         random_stelum_button = Button(text='Random stelum')
         random_head_button = Button(text='Random head')
@@ -108,6 +110,8 @@ class MainScreen(Screen):
         random_details1_button.bind(on_release=self.change_details1_random)
         random_details2_button.bind(on_release=self.change_details2_random)
 
+        grid_layout.add_widget(type_button)
+        grid_layout.add_widget(save_button)
         grid_layout.add_widget(stelum_button)
         grid_layout.add_widget(random_stelum_button)
         grid_layout.add_widget(Button(text='Head'))
@@ -159,7 +163,6 @@ class SecondScreen(Screen):
         layout = BoxLayout(orientation='vertical')
         self.fungus_image = FungusImage()
         fungus_model.subscribe(self.fungus_image)
-        self.fungus_image.bind(on_touch_down=self.switch_fungus_type)
         layout.add_widget(self.fungus_image)
 
         colorpicker = ColorPicker()
@@ -179,10 +182,6 @@ class SecondScreen(Screen):
 
     def changer(self, *args):
         self.manager.current = 'screen1'
-
-    def switch_fungus_type(self, *args):
-        global fungus_model
-        fungus_model.switch_type()
 
 
 class MycologyApp(App):
