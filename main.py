@@ -16,6 +16,7 @@ from src.draw_fungus import draw_fungus, WARPED_FUNGUS_TYPE, CRIMSON_FUNGUS_TYPE
 class FungusModel:
     def __init__(self):
         self.colors = [0xffffff for i in range(4)]
+        self.preview_colors = self.colors
         self.type = CRIMSON_FUNGUS_TYPE
         self.observers = []
 
@@ -26,6 +27,9 @@ class FungusModel:
         for obs in self.observers:
             obs.update_texture()
         return
+
+    def apply_preview_colors(self):
+        self.colors = self.preview_colors
 
     def switch_type(self):
         if self.type == CRIMSON_FUNGUS_TYPE:
