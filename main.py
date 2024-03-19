@@ -1,3 +1,5 @@
+import random
+
 import numpy as np
 from kivy.app import App
 from kivy.graphics.texture import Texture
@@ -6,16 +8,18 @@ from kivy.uix.button import Button
 from kivy.uix.colorpicker import ColorPicker
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image
-from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, SlideTransition
+from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 
 from src.draw_fungus import draw_fungus, WARPED_FUNGUS_TYPE
+
+global_colors = [0xffffff for i in range(4)]
 
 
 class FungusImage(Image):
     def __init__(self, **kwargs):
         super(FungusImage, self).__init__(**kwargs)
         texture = Texture.create(size=(16, 16), colorfmt="rgba")
-        source = draw_fungus([0xFFF7E7, 0xFFF7E7, 0xC7C1B4, 0xA8A398], WARPED_FUNGUS_TYPE)
+        source = draw_fungus(global_colors, WARPED_FUNGUS_TYPE)
         texture.blit_buffer(np.flipud(source).tobytes(order="A"), bufferfmt="ubyte", colorfmt="rgba")
         self.texture = texture
         # size and display
@@ -26,6 +30,14 @@ class FungusImage(Image):
         self.allow_stretch = True
         self.texture.mag_filter = 'nearest'
 
+    def update_texture(self):
+        texture = Texture.create(size=(16, 16), colorfmt="rgba")
+        source = draw_fungus(global_colors, WARPED_FUNGUS_TYPE)
+        texture.blit_buffer(np.flipud(source).tobytes(order="A"), bufferfmt="ubyte", colorfmt="rgba")
+        self.texture = texture
+        self.allow_stretch = True
+        self.texture.mag_filter = 'nearest'
+
 
 class MainScreen(Screen):
     def __init__(self, **kwargs):
@@ -33,26 +45,68 @@ class MainScreen(Screen):
 
         layout = BoxLayout(orientation='vertical')
 
-        layout.add_widget(FungusImage())
+        self.fungus_image = FungusImage()
+        layout.add_widget(self.fungus_image)
 
         grid_layout = GridLayout(cols=2)
-        testButton = Button(text='Stelum')
-        testButton.bind(on_release=self.changer)
-        grid_layout.add_widget(testButton)
-        grid_layout.add_widget(Button(text='Random stelum'))
+
+        stelum_button = Button(text='Stelum')
+        random_stelum_button = Button(text='Random stelum')
+        random_head_button = Button(text='Random head')
+        random_details1_button = Button(text='Random details1')
+        random_details2_button = Button(text='Random details2')
+
+        stelum_button.bind(on_release=self.changer)
+        random_stelum_button.bind(on_release=self.change_stelum_random)
+        random_head_button.bind(on_release=self.change_head_random)
+        random_details1_button.bind(on_release=self.change_details1_random)
+        random_details2_button.bind(on_release=self.change_details2_random)
+
+        grid_layout.add_widget(stelum_button)
+        grid_layout.add_widget(random_stelum_button)
         grid_layout.add_widget(Button(text='Head'))
-        grid_layout.add_widget(Button(text='Random head'))
+        grid_layout.add_widget(random_head_button)
         grid_layout.add_widget(Button(text='Details1'))
-        grid_layout.add_widget(Button(text='Random details1'))
+        grid_layout.add_widget(random_details1_button)
         grid_layout.add_widget(Button(text='Details2'))
-        grid_layout.add_widget(Button(text='Random details2'))
+        grid_layout.add_widget(random_details2_button)
 
         layout.add_widget(grid_layout)
-        layout.add_widget(Button(text='Random all'))
+        random_all_button = Button(text='Random all')
+        random_all_button.bind(on_release=self.change_color_random)
+        layout.add_widget(random_all_button)
         self.add_widget(layout)
 
     def changer(self, *args):
         self.manager.current = 'screen2'
+
+    def change_stelum_random(self, *args):
+        global global_colors
+        global_colors[0] = random.randint(0, 0xffffff)
+        self.fungus_image.update_texture()
+
+    def change_head_random(self, *args):
+        global global_colors
+        global_colors[1] = random.randint(0, 0xffffff)
+        self.fungus_image.update_texture()
+
+    def change_details1_random(self, *args):
+        global global_colors
+        global_colors[2] = random.randint(0, 0xffffff)
+        self.fungus_image.update_texture()
+
+    def change_details2_random(self, *args):
+        global global_colors
+        global_colors[3] = random.randint(0, 0xffffff)
+        self.fungus_image.update_texture()
+
+    def change_color_random(self, *args):
+        global global_colors
+        global_colors = [random.randint(0, 0xffffff) for i in range(4)]
+        self.fungus_image.update_texture()
+
+    def on_enter(self, *args):
+        self.fungus_image.update_texture()
 
 
 class SecondScreen(Screen):
@@ -61,7 +115,8 @@ class SecondScreen(Screen):
         super(SecondScreen, self).__init__(**kwargs)
 
         layout = BoxLayout(orientation='vertical')
-        layout.add_widget(FungusImage())
+        self.fungus_image = FungusImage()
+        layout.add_widget(self.fungus_image)
         colorpicker = ColorPicker()
         layout.add_widget(colorpicker)
 
@@ -79,6 +134,9 @@ class SecondScreen(Screen):
 
     def changer(self, *args):
         self.manager.current = 'screen1'
+
+    def on_enter(self, *args):
+        self.fungus_image.update_texture()
 
 
 class MycologyApp(App):
