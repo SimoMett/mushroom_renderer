@@ -150,9 +150,6 @@ class MainScreen(Screen):
         global fungus_model
         fungus_model.change_color_random()
 
-    def on_enter(self, *args):
-        self.fungus_image.update_texture()
-
 
 class SecondScreen(Screen):
 
@@ -182,9 +179,6 @@ class SecondScreen(Screen):
 
     def changer(self, *args):
         self.manager.current = 'screen1'
-
-    def on_enter(self, *args):
-        self.fungus_image.update_texture()
 
     def switch_fungus_type(self, *args):
         global fungus_model
