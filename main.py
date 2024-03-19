@@ -10,12 +10,13 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 
-from src.draw_fungus import draw_fungus, WARPED_FUNGUS_TYPE
+from src.draw_fungus import draw_fungus, WARPED_FUNGUS_TYPE, CRIMSON_FUNGUS_TYPE
 
 
-class FungusColorModel:
+class FungusModel:
     def __init__(self):
         self.colors = [0xffffff for i in range(4)]
+        self.type = CRIMSON_FUNGUS_TYPE
         self.observers = []
 
     def subscribe(self, observer):
@@ -25,6 +26,13 @@ class FungusColorModel:
         for obs in self.observers:
             obs.update_texture()
         return
+
+    def switch_type(self):
+        if self.type == CRIMSON_FUNGUS_TYPE:
+            self.type = WARPED_FUNGUS_TYPE
+        else:
+            self.type = CRIMSON_FUNGUS_TYPE
+        self.notify()
 
     def change_stelum_random(self):
         self.colors[0] = random.randint(0, 0xffffff)
@@ -47,15 +55,15 @@ class FungusColorModel:
         self.notify()
 
 
-fungus_color_model = FungusColorModel()
+fungus_model = FungusModel()
 
 
 class FungusImage(Image):
     def __init__(self, **kwargs):
         super(FungusImage, self).__init__(**kwargs)
-        fungus_color_model.subscribe(self)
+        fungus_model.subscribe(self)
         texture = Texture.create(size=(16, 16), colorfmt="rgba")
-        source = draw_fungus(fungus_color_model.colors, WARPED_FUNGUS_TYPE)
+        source = draw_fungus(fungus_model.colors, fungus_model.type)
         texture.blit_buffer(np.flipud(source).tobytes(order="A"), bufferfmt="ubyte", colorfmt="rgba")
         self.texture = texture
         # size and display
@@ -68,7 +76,7 @@ class FungusImage(Image):
 
     def update_texture(self):
         texture = Texture.create(size=(16, 16), colorfmt="rgba")
-        source = draw_fungus(fungus_color_model.colors, WARPED_FUNGUS_TYPE)
+        source = draw_fungus(fungus_model.colors, fungus_model.type)
         texture.blit_buffer(np.flipud(source).tobytes(order="A"), bufferfmt="ubyte", colorfmt="rgba")
         self.texture = texture
         self.allow_stretch = True
@@ -82,7 +90,8 @@ class MainScreen(Screen):
         layout = BoxLayout(orientation='vertical')
 
         self.fungus_image = FungusImage()
-        fungus_color_model.subscribe(self.fungus_image)
+        fungus_model.subscribe(self.fungus_image)
+        self.fungus_image.bind(on_touch_down=self.switch_fungus_type)
         layout.add_widget(self.fungus_image)
 
         grid_layout = GridLayout(cols=2)
@@ -117,25 +126,29 @@ class MainScreen(Screen):
     def changer(self, *args):
         self.manager.current = 'screen2'
 
+    def switch_fungus_type(self, *args):
+        global fungus_model
+        fungus_model.switch_type()
+
     def change_stelum_random(self, *args):
-        global fungus_color_model
-        fungus_color_model.change_stelum_random()
+        global fungus_model
+        fungus_model.change_stelum_random()
 
     def change_head_random(self, *args):
-        global fungus_color_model
-        fungus_color_model.change_head_random()
+        global fungus_model
+        fungus_model.change_head_random()
 
     def change_details1_random(self, *args):
-        global fungus_color_model
-        fungus_color_model.change_details1_random()
+        global fungus_model
+        fungus_model.change_details1_random()
 
     def change_details2_random(self, *args):
-        global fungus_color_model
-        fungus_color_model.change_details2_random()
+        global fungus_model
+        fungus_model.change_details2_random()
 
     def change_color_random(self, *args):
-        global fungus_color_model
-        fungus_color_model.change_color_random()
+        global fungus_model
+        fungus_model.change_color_random()
 
     def on_enter(self, *args):
         self.fungus_image.update_texture()
@@ -148,7 +161,8 @@ class SecondScreen(Screen):
 
         layout = BoxLayout(orientation='vertical')
         self.fungus_image = FungusImage()
-        fungus_color_model.subscribe(self.fungus_image)
+        fungus_model.subscribe(self.fungus_image)
+        self.fungus_image.bind(on_touch_down=self.switch_fungus_type)
         layout.add_widget(self.fungus_image)
 
         colorpicker = ColorPicker()
@@ -171,6 +185,10 @@ class SecondScreen(Screen):
 
     def on_enter(self, *args):
         self.fungus_image.update_texture()
+
+    def switch_fungus_type(self, *args):
+        global fungus_model
+        fungus_model.switch_type()
 
 
 class MycologyApp(App):
