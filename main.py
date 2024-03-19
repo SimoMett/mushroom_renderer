@@ -11,20 +11,20 @@ from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, SlideTra
 from src.draw_fungus import draw_fungus, WARPED_FUNGUS_TYPE
 
 
-def get_fungus_image_widget():
-    image = Image()
-    texture = Texture.create(size=(16, 16), colorfmt="rgba")
-    source = draw_fungus([0xFFF7E7, 0xFFF7E7, 0xC7C1B4, 0xA8A398], WARPED_FUNGUS_TYPE)
-    texture.blit_buffer(np.flipud(source).tobytes(order="A"), bufferfmt="ubyte", colorfmt="rgba")
-    image.texture = texture
-    # size and display
-    # img.size_hint_x = None
-    # img.size_hint_y = None
-    # img.width = 550
-    # img.height = 550
-    image.allow_stretch = True
-    image.texture.mag_filter = 'nearest'
-    return image
+class FungusImage(Image):
+    def __init__(self, **kwargs):
+        super(FungusImage, self).__init__(**kwargs)
+        texture = Texture.create(size=(16, 16), colorfmt="rgba")
+        source = draw_fungus([0xFFF7E7, 0xFFF7E7, 0xC7C1B4, 0xA8A398], WARPED_FUNGUS_TYPE)
+        texture.blit_buffer(np.flipud(source).tobytes(order="A"), bufferfmt="ubyte", colorfmt="rgba")
+        self.texture = texture
+        # size and display
+        # img.size_hint_x = None
+        # img.size_hint_y = None
+        # img.width = 550
+        # img.height = 550
+        self.allow_stretch = True
+        self.texture.mag_filter = 'nearest'
 
 
 class MainScreen(Screen):
@@ -33,7 +33,7 @@ class MainScreen(Screen):
 
         layout = BoxLayout(orientation='vertical')
 
-        layout.add_widget(get_fungus_image_widget())
+        layout.add_widget(FungusImage())
 
         grid_layout = GridLayout(cols=2)
         testButton = Button(text='Stelum')
@@ -61,7 +61,7 @@ class SecondScreen(Screen):
         super(SecondScreen, self).__init__(**kwargs)
 
         layout = BoxLayout(orientation='vertical')
-        layout.add_widget(get_fungus_image_widget())
+        layout.add_widget(FungusImage())
         colorpicker = ColorPicker()
         layout.add_widget(colorpicker)
 
