@@ -104,7 +104,7 @@ class ColorsLabel(Label):
 
     def update(self):
         colors = fungus_model.colors()
-        self.text = hex(colors[0])+", "+hex(colors[1])+", "+hex(colors[2])+", "+hex(colors[3])
+        self.text = hex(colors[0])+", "+hex(colors[1])+"\n"+hex(colors[2])+", "+hex(colors[3])
 
 
 class MainScreen(Screen):
