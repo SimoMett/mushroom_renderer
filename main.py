@@ -8,6 +8,7 @@ from kivy.uix.button import Button
 from kivy.uix.colorpicker import ColorPicker
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image
+from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 
 from src.draw_fungus import draw_fungus, WARPED_FUNGUS_TYPE, CRIMSON_FUNGUS_TYPE
@@ -28,7 +29,7 @@ class FungusModel:
 
     def notify(self):
         for obs in self.observers:
-            obs.update_texture()
+            obs.update()
         return
 
     def switch_type(self):
@@ -87,13 +88,23 @@ class FungusImage(Image):
         self.allow_stretch = True
         self.texture.mag_filter = 'nearest'
 
-    def update_texture(self):
+    def update(self):
         texture = Texture.create(size=(16, 16), colorfmt="rgba")
         source = draw_fungus(fungus_model.colors(), fungus_model.type)
         texture.blit_buffer(np.flipud(source).tobytes(order="A"), bufferfmt="ubyte", colorfmt="rgba")
         self.texture = texture
         self.allow_stretch = True
         self.texture.mag_filter = 'nearest'
+
+
+class ColorsLabel(Label):
+    def __init__(self, **kwargs):
+        super(ColorsLabel, self).__init__(**kwargs)
+        fungus_model.subscribe(self)
+
+    def update(self):
+        colors = fungus_model.colors()
+        self.text = hex(colors[0])+", "+hex(colors[1])+", "+hex(colors[2])+", "+hex(colors[3])
 
 
 class MainScreen(Screen):
@@ -107,7 +118,7 @@ class MainScreen(Screen):
 
         grid_layout = GridLayout(cols=2)
 
-        type_button, save_button = Button(text="Type"), Button(text="Save")
+        type_button, colors_label = Button(text="Type"), ColorsLabel(text="0xffffff, 0xffffff, 0xffffff, 0xffffff")
         stelum_button, random_stelum_button = Button(text='Stelum'), Button(text='Random stelum')
         head_button, random_head_button = Button(text='Head'), Button(text='Random head')
         details1_button, random_details1_button = Button(text='Details1'), Button(text='Random details1')
@@ -124,7 +135,7 @@ class MainScreen(Screen):
         random_details2_button.bind(on_release=self.change_details2_random)
 
         grid_layout.add_widget(type_button)
-        grid_layout.add_widget(save_button)
+        grid_layout.add_widget(colors_label)
         grid_layout.add_widget(stelum_button)
         grid_layout.add_widget(random_stelum_button)
         grid_layout.add_widget(head_button)
