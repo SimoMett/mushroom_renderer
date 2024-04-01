@@ -23,9 +23,11 @@ def export_svg(file_name):
         for j in range(16):
             if result[j][i][3] == 0:
                 continue
-            color = hex((result[j][i][0] << 16) + (result[j][i][1] << 8) + result[j][i][2])
+            color = "#{:06x}".format(
+                (result[j][i][0] << 16) + (result[j][i][1] << 8) + result[j][i][2]
+            )
             box = svg.Rect(x=i, y=j, width=1, height=1,
-                           fill=str(color).replace("0x", "#"))
+                           fill=color)
             _elements.append(box)
     canvas = svg.SVG(
         width=16,
