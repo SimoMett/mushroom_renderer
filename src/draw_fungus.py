@@ -1,6 +1,9 @@
+import urllib
+
 import cv2
 import numpy as np
-
+import requests
+from urllib3.exceptions import NewConnectionError
 
 fungus_types = [
     "crimson",
@@ -17,13 +20,36 @@ texture_templates = [
     "_fungus_details2"
 ]
 
+templates_cache = dict()
+
+
+def get_texture(fungus_type, texture):
+    full_text_name = fungus_types[fungus_type] + texture
+    if full_text_name in templates_cache.keys():
+        return templates_cache[full_text_name]
+
+    try:
+        url = "https://raw.githubusercontent.com/SimoMett/MycologyMC/master/src/main/resources/assets/mycologymod/textures/item/" + \
+              full_text_name + ".png"
+        req = urllib.request.urlopen(url)
+        arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
+        in_img = cv2.imdecode(arr, cv2.IMREAD_UNCHANGED)
+        templates_cache[full_text_name] = in_img
+    except NewConnectionError as e:
+        print("ERROR OCCURRED. Using local assets")
+
+        path = "res/templates/" + full_text_name + ".png"
+        in_img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+    return in_img
+
 
 def draw_fungus(fungus_colors, fungus_type=CRIMSON_FUNGUS_TYPE):
     out_images = []
-    for texture in texture_templates:
-        color_index = texture_templates.index(texture)
-        path = "res/templates/" + fungus_types[fungus_type] + texture + ".png"
-        in_img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+    for texture_name in texture_templates:
+        color_index = texture_templates.index(texture_name)
+
+        in_img = get_texture(fungus_type, texture_name)
+
         b, g, r, a = cv2.split(in_img)
 
         # extracting channels from fungus_colors
