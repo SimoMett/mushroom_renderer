@@ -55,7 +55,7 @@ python-dateutil==2.9.0.post0
 pyzmq==25.1.2
 referencing==0.34.0
 reportlab==4.1.0
-requests==2.32.0
+requests==2.32.4
 rpds-py==0.18.0
 sh==1.14.3
 six==1.16.0
@@ -65,7 +65,7 @@ svg.py==1.4.3
 tinycss2==1.2.1
 toml==0.10.2
 traitlets==5.14.2
-urllib3==2.2.2
+urllib3==2.5.0
 wcwidth==0.2.13
 webencodings==0.5.1
 yarg==0.1.9
